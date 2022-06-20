@@ -45,11 +45,25 @@ const HalfSpaceException = [
             'شنیدن'
         ]
     ],
-]
+];
+const rtrim = (str, chr) => {
+    var rgxtrim = (!chr) ? new RegExp('\\s+$') : new RegExp(chr + '+$');
+    return str.replace(rgxtrim, '');
+}
+const ltrim = (str, chr) => {
+    var rgxtrim = (!chr) ? new RegExp('^\\s+') : new RegExp('^' + chr + '+');
+    return str.replace(rgxtrim, '');
+}
 const RemoveHalfSpaces = (s) => {
-    const RegexHalfSpace = new RegExp(/(^ |‌)/, "gmiu");
-    const RegexHalfSpace2 = new RegExp(/($ |‌)/, "gmiu");
-    return s.replace(RegexHalfSpace, '').replace(RegexHalfSpace2, '');
+    s = rtrim(s, ' ');
+    s = rtrim(s, '‌');
+    s = ltrim(s, ' ');
+    s = ltrim(s, '‌');
+    return s;
+}
+const ClearText = (String) => {
+    const RegexSpacialChars = new RegExp(/[.,،:؛;?!؟]/, "gmiu");
+    return String.replace(RegexSpacialChars, "");
 }
 const GrammarCorrection = (MainString) => {
     const Space = ' ';
@@ -64,13 +78,14 @@ const GrammarCorrection = (MainString) => {
         .replace(RegexAfter, " $1");
     let StringArray = MainString.split(" ");
     StringArray.forEach((Text, Index) => {
-        Text = RemoveHalfSpaces(Text.trim());
-        let CleanText = RemoveHalfSpaces(Text);
+        Text = RemoveHalfSpaces(Text);
+        let CleanText = ClearText(RemoveHalfSpaces(Text));
         CleanText = CleanText.replace(RegexSperate, "$1" + HalfSpace + "$2");
-        StringArray[Index] = CleanText;
+        StringArray[Index] = Text;
         if (StringArray[Index + 1] !== undefined) {
-            let NextTextClean = RemoveHalfSpaces(StringArray[Index + 1]);
+            let NextTextClean = ClearText(RemoveHalfSpaces(StringArray[Index + 1]));
             if (VerbEndingWith.includes(NextTextClean)) {
+                console.log(Text + ' ' +NextTextClean);
                 StringArray[Index] = Text + HalfSpace + RemoveHalfSpaces(StringArray[Index + 1]);
                 StringArray.splice(Index + 1, 1);
             } else if (NextTextClean === 'شده' && AdjectiveEndingWithShodeh.includes(CleanText)) {
@@ -86,7 +101,8 @@ const GrammarCorrection = (MainString) => {
             StringArray.splice(Index + 1, 1);
         }
     });
-    return StringArray.join(" ");
+    MainString = StringArray.join(" ");
+    return MainString;
 }
 const IsException = (CleanText, NextTextClean) => {
     let IsException = false;
