@@ -88,7 +88,7 @@ const GrammarCorrection = (MainString) => {
     StringArray.forEach((Text, Index) => {
         Text = RemoveHalfSpaces(Text);
         let CleanText = ClearText(RemoveHalfSpaces(Text));
-        CleanText = CleanText.replace(RegexSperate, "$1" + HalfSpace + "$2");
+        StringArray[Index] = Text.replace(RegexSperate, "$1" + HalfSpace + "$2");
         StringArray[Index] = Text;
         if (StringArray[Index + 1] !== undefined) {
             let NextTextClean = ClearText(RemoveHalfSpaces(StringArray[Index + 1]));
