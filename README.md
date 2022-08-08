@@ -42,8 +42,10 @@ let newString = Fix.get();
 میشود به می‌شود تبدیل شود
 ## اسکرین شات
 قبل:
+
 ![Before](https://github.com/mr-shady/halfspace/raw/main/Screenshot.png)
 بعد:
+
 ![After](https://github.com/mr-shady/halfspace/raw/main/Screenshot-after.png)
 
 
