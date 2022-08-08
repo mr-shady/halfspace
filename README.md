@@ -44,6 +44,7 @@ let newString = Fix.get();
 قبل:
 
 ![Before](https://github.com/mr-shady/halfspace/raw/main/Screenshot.png)
+
 بعد:
 
 ![After](https://github.com/mr-shady/halfspace/raw/main/Screenshot-after.png)
