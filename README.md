@@ -19,6 +19,13 @@
 ```
 CheckGrammar('#Grammer');
 ```
+
+یا مستقیم کلاس رو صدا زده و متن رو در اختیارش قرار بدید و خروجی اصلاح شده رو تحویل بگیرید
+```
+  let String = 'این متن نیاز به اصلاح نیم فاصله دارد.';
+	const Fix = new FixGrammar(String);
+  let newString = Fix.get();
+```
     
 ## قابلیت ها
 
