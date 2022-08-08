@@ -1,0 +1,28 @@
+{
+
+  "description": "This Extension fixes the halfspace and grammar on persian texts.",
+  "manifest_version": 2,
+  "name": "HalfSpace Fixer",
+  "version": "1.0",
+  "homepage_url": "https://github.com/mr-shady/halfspace",
+  "icons": {
+    "48": "icons/icon-48.png"
+  },
+
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/icon-32.png",
+    "theme_icons": [{
+        "light": "icons/icon-32.png",
+        "dark": "icons/icon-32.png",
+        "size": 32
+    }],
+    "default_title": "HalfSpace Fixer",
+    "default_popup": "popup/popup.html"
+  }
+
+}
