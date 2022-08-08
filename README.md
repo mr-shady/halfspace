@@ -10,18 +10,18 @@
 
 برای نصب و استفاده کافی است فایل جی‌اس را به پوشه پروژه خود منتقل کرده و سپس آن را در اچ‌تی‌ام‌ال فراخوانی کنید
 
-```
+```html
   <script src="HalfSpace.js" type="text/javascript"></script>
 ```
 
 سپس از فانکشن زیر برای اصلاح فیلد‌های مورد نظر خود استفاده کنید.
 
-```
+```javascript
 CheckGrammar('#Grammer');
 ```
 
 یا مستقیم کلاس رو صدا زده و متن رو در اختیارش قرار بدید و خروجی اصلاح شده رو تحویل بگیرید
-```
+```javascript
 let String = 'این متن نیاز به اصلاح نیم فاصله دارد.';
 const Fix = new FixGrammar(String);
 let newString = Fix.get();
