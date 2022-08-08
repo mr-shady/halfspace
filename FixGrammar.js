@@ -1,3 +1,9 @@
+/**
+ * this class is used to fix the grammar of the persian text
+ * version 1.4.5
+ * @param {*} String 
+ * @param {*} options 
+ */
 function FixGrammar(String, options) {
     // default options /-> you can pass new values to this function
     let defaultOptions = {
