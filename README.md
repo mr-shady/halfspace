@@ -12,7 +12,7 @@
 
 ```html
   <script src="HalfSpace.js" type="text/javascript"></script>
-  OR
+  <!---- OR ---->
   <script src="https://cdn.jsdelivr.net/gh/mr-shady/halfspace/FixGrammar.min.js" type="text/javascript"></script>
   
 ```
