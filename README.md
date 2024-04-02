@@ -12,6 +12,9 @@
 
 ```html
   <script src="HalfSpace.js" type="text/javascript"></script>
+  <!---- OR ---->
+  <script src="https://cdn.jsdelivr.net/gh/mr-shady/halfspace/FixGrammar.min.js" type="text/javascript"></script>
+  
 ```
 
 سپس از فانکشن زیر برای اصلاح فیلد‌های مورد نظر خود استفاده کنید.
@@ -27,7 +30,7 @@ const Fix = new FixGrammar(String);
 let newString = Fix.get();
 ```
     
-## قابلیت ها
+## قابلیت‌ها
 
 - اصلاح فاصله قبل و بعد .,،:؛;?!؟
 - ی اضافه در کلماتی همانند: جمله‌ی، برنامه‌ی، فاصله‌ی و غیره.
