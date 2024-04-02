@@ -166,10 +166,10 @@ class FixGrammar {
 }
 
 // Usage
-$string = "این متن برای می باشد نمی باشد ؟ چی ! نمی فهمی .";
+// $string = "این متن برای می باشد نمی باشد ؟ چی ! نمی فهمی .";
 
 
-$fixGrammar = new FixGrammar($string);
-$fixedString = $fixGrammar->get();
+// $fixGrammar = new FixGrammar($string);
+// $fixedString = $fixGrammar->get();
 
-echo $fixedString;
+// echo $fixedString;
