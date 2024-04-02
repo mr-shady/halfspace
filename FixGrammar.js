@@ -22,6 +22,7 @@ function FixGrammar(String, options) {
         VerbEndingWith: [
             'ی',
             'ها',
+            'هایی',
             'های',
             'ام',
             'اند',
