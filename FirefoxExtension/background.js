@@ -1,17 +1,15 @@
-// Create context menu on installation to avoid duplication errors in Chrome
-chrome.runtime.onInstalled.addListener(() => {
-    chrome.contextMenus.create({
-        id: "otomatn-fix",
-        title: "اصلاح با اتومتن",
-        contexts: ["selection"]
-    });
+
+browser.contextMenus.create({
+    id: "otomatn-fix",
+    title: "اصلاح با اتومتن",
+    contexts: ["selection"] 
 });
 
-chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+browser.contextMenus.onClicked.addListener(async (info, tab) => {
     if (info.menuItemId === "otomatn-fix") {
+        
         try {
-            // Chrome MV3 supports promises for scripting.executeScript
-            const results = await chrome.scripting.executeScript({
+            const [{result}] = await browser.scripting.executeScript({
                 target: { tabId: tab.id },
                 func: () => {
                     const selection = window.getSelection();
@@ -24,12 +22,9 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
                 },
             });
 
-            // In Chrome, results is an array of objects: [{frameId: 0, result: "..."}]
-            const resultText = results[0].result;
+            await browser.storage.local.set({ "otomatn_content": result });
 
-            await chrome.storage.local.set({ "otomatn_content": resultText });
-
-            chrome.windows.create({
+            browser.windows.create({
                 url: "popup/popup.html",
                 type: "popup",
                 width: 600,

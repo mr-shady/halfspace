@@ -1,25 +1,24 @@
 {
-    "name": "HalfSpace Fixer",
-    "description": "This Extension fixes the halfspace and grammar on persian texts.",
-    "version": "1.0",
-    "manifest_version": 3,
-    "background": {
-      "service_worker": "background.js"
-    },
-    "permissions": ["storage", "activeTab", "scripting"],
-    "action": {
-      "default_popup": "popup.html",
-      "default_icon": {
-        "16": "/images/icon-16.png",
-        "32": "/images/icon-32.png",
-        "48": "/images/icon-48.png",
-        "128": "/images/icon-128.png"
-      }
-    },
-    "icons": {
-      "16": "/images/icon-16.png",
-      "32": "/images/icon-32.png",
-      "48": "/images/icon-48.png",
-      "128": "/images/icon-128.png"
-    }
+  "description": "Otomatn irons your Persian text! Fixes half-spaces and grammar automatically.",
+  "manifest_version": 3,
+  "name": "Otomatn | اتومتن",
+  "version": "2.0",
+  "homepage_url": "https://github.com/mr-shady/halfspace",
+  "icons": {
+    "48": "icons/logo-48.png"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "contextMenus",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_icon": "icons/logo-32.png",
+    "default_title": "Otomatn: Persian Text Refiner",
+    "default_popup": "popup/popup.html"
+  }
 }
