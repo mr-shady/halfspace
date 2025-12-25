@@ -1,37 +1,187 @@
-## Welcome to GitHub Pages
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.3/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
 
-You can use the [editor on GitHub](https://github.com/mr-shady/halfspace/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+<style>
+  :root {
+    --primary-color: #2c3e50;
+    --accent-color: #3498db;
+    --bg-code: #f6f8fa;
+  }
+  body, h1, h2, h3, h4, h5, h6, p, li, a, td, th {
+    font-family: 'Vazirmatn', sans-serif !important;
+  }
+  body {
+    direction: rtl;
+    text-align: right;
+    line-height: 1.8;
+    color: #24292e;
+  }
+  /* Code blocks LTR fix */
+  pre, code {
+    direction: ltr;
+    text-align: left;
+    font-family: 'Consolas', 'Monaco', monospace !important;
+    background-color: var(--bg-code);
+    border-radius: 6px;
+  }
+  /* Blockquote styling */
+  blockquote {
+    border-right: 4px solid var(--accent-color);
+    border-left: none;
+    padding: 10px 20px 10px 0;
+    background-color: #f1f9ff;
+    color: #444;
+    margin: 20px 0;
+  }
+  /* Lists */
+  ul, ol {
+    padding-right: 2em;
+    padding-left: 0;
+  }
+  /* Tables */
+  table {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 10px 15px;
+    border: 1px solid #dfe2e5;
+  }
+  th {
+    background-color: #f6f8fa;
+    font-weight: bold;
+  }
+</style>
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+# مستندات فنی و راهنمای اتومتن (HalfSpace)
+### کتابخانه اصلاح‌گر هوشمند متن فارسی و مدیریت نیم‌فاصله‌ها
 
-### Markdown
+پروژه **HalfSpace** (که با نام تجاری **اتومتن** به صورت افزونه منتشر شده است)، یک موتور پردازش متن سبک و سریع است که برای استانداردسازی متون فارسی، اصلاح نیم‌فاصله‌ها (Zero-width non-joiner) و ویرایش علائم نگارشی طراحی شده است.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+---
 
-```markdown
-Syntax highlighted code block
+## 🚀 معرفی و قابلیت‌ها
 
-# Header 1
-## Header 2
-### Header 3
+هسته اصلی این پروژه کلاس `FixGrammar` است که وظیفه پردازش رشته‌ها (Strings) را بر عهده دارد. این ابزار قابلیت‌های زیر را ارائه می‌دهد:
 
-- Bulleted
-- List
+* **اصلاح پیشوندها:** اتصال "می" و "نمی" به افعال (مثال: *می روم* ← *می‌روم*).
+* **اصلاح پسوندها:** اتصال نشانه‌های جمع "ها"، پسوندهای فعلی و ضمیرها (مثال: *کتاب ها* ← *کتاب‌ها*).
+* **مدیریت علائم نگارشی:** حذف فاصله قبل و ایجاد فاصله بعد از علائم (`.`، `،`، `!`، `؟` و...).
+* **استثنائات هوشمند:** پشتیبانی از کلمات مرکب خاص (مانند *نیم‌فاصله*، *پس‌زمینه*).
+* **افعال مرکب و صفت‌ها:** تشخیص ساختارهایی مثل "گم شده" ← "گم‌شده".
 
-1. Numbered
-2. List
+---
 
-**Bold** and _Italic_ and `Code` text
+## 📦 نصب و راه‌اندازی
 
-[Link](url) and ![Image](src)
+### ۱. استفاده به عنوان افزونه مرورگر (Extension)
+برای کاربران عادی که قصد دارند متون وب را اصلاح کنند.
+* **کروم (Chrome):** دانلود فایل Zip پروژه، فعال‌سازی *Developer Mode* در `chrome://extensions` و بارگذاری پوشه.
+* **فایرفاکس (Firefox):** بارگذاری فایل `manifest.json` از طریق `about:debugging`.
+
+### ۲. استفاده در پروژه وب (Developer)
+برای توسعه‌دهندگانی که می‌خواهند این قابلیت را به سایت خود اضافه کنند.
+
+**افزودن اسکریپت:**
+```html
+<script src="[https://cdn.jsdelivr.net/gh/mr-shady/halfspace/FixGrammar.min.js](https://cdn.jsdelivr.net/gh/mr-shady/halfspace/FixGrammar.min.js)"></script>
+
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+**استفاده ساده:**
 
-### Jekyll Themes
+```javascript
+const text = "من می توانم متن ها را اصلاح کنم.";
+const fixer = new FixGrammar(text);
+console.log(fixer.get()); 
+// خروجی: "من می‌توانم متن‌ها را اصلاح کنم."
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/mr-shady/halfspace/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+```
 
-### Support or Contact
+---
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## ⚙️ مستندات فنی (Technical Documentation)
+
+کلاس `FixGrammar` علاوه بر متن ورودی، یک آبجکت `options` نیز دریافت می‌کند که به شما اجازه می‌دهد رفتار پیش‌فرض را تغییر دهید.
+
+### ساختار Constructor
+
+```javascript
+new FixGrammar(String text, Object options);
+
+```
+
+### تنظیمات (Options)
+
+شما می‌توانید این پارامترها را هنگام ساخت کلاس ارسال کنید تا دیتابیس کلمات یا قوانین را تغییر دهید:
+
+| پارامتر | نوع | پیش‌فرض | توضیحات |
+| --- | --- | --- | --- |
+| `Space` | String | `' '` | کاراکتر مورد استفاده برای فاصله معمولی. |
+| `HalfSpace` | String | `'‌'` | کاراکتر نیم‌فاصله (`&zwnj;`). |
+| `RemoveAllHalfSpaces` | Boolean | `true` | آیا پیش از پردازش، تمام نیم‌فاصله‌های موجود حذف شوند؟ |
+| `VerbStartingWith` | Array | `['می', 'نمی']` | پیشوندهایی که باید با نیم‌فاصله به کلمه بعد بچسبند. |
+| `VerbEndingWith` | Array | `['ها', 'های', 'ام'...]` | پسوندهایی که باید با نیم‌فاصله به کلمه قبل بچسبند. |
+| `AdjectiveEndingWithShodeh` | Array | `['گم', 'رها'...]` | کلماتی که اگر قبل از "شده" بیایند، باید متصل شوند. |
+| `PopularVerbs` | Array | `['باشد', 'آید'...]` | افعالی که اگر بعد از پیشوندها بیایند شناسایی می‌شوند. |
+
+### مثال پیشرفته (Advanced Usage)
+
+فرض کنید می‌خواهید کلمات جدیدی به لیست استثنائات اضافه کنید یا کاراکتر نیم‌فاصله را تغییر دهید:
+
+```javascript
+const myOptions = {
+    // افزودن یک پیشوند جدید
+    VerbStartingWith: ['می', 'نمی', 'بی'], 
+    
+    // تعریف کلمات مرکب خاص (Array of Arrays)
+    HalfSpaceException: [
+        [['دیوانه'], ['وار']], // تبدیل "دیوانه وار" به "دیوانه‌وار"
+        [['جست'], ['و', 'جو']]
+    ]
+};
+
+const rawText = "او دیوانه وار جست و جو می کرد.";
+const fixer = new FixGrammar(rawText, myOptions);
+
+console.log(fixer.get());
+// خروجی: "او دیوانه‌وار جست‌وجو می‌کرد."
+
+```
+
+---
+
+## 🔍 نحوه عملکرد (Algorithm)
+
+موتور `FixGrammar` به ترتیب زیر عمل می‌کند:
+
+1. **پیش‌پردازش:** ابتدا با استفاده از `RemoveHalfSpaces`، تمام نیم‌فاصله‌های احتمالی موجود را حذف می‌کند تا متن یکدست شود.
+2. **اصلاح علائم نگارشی:** با استفاده از Regex، فاصله‌های قبل از `.`، `،` و غیره را حذف و فاصله بعد از آن‌ها را تضمین می‌کند.
+3. **توکن‌بندی (Tokenization):** متن بر اساس فاصله (Space) به آرایه‌ای از کلمات تقسیم می‌شود.
+4. **حلقه پردازش:** برنامه روی کلمات پیمایش می‌کند و کلمه جاری (`Word`) را با کلمه بعدی (`NextWord`) مقایسه می‌کند:
+* اگر کلمه جاری جزو `VerbStartingWith` باشد (مثل "می")، آن را به کلمه بعدی می‌چسباند.
+* اگر کلمه بعدی جزو `VerbEndingWith` باشد (مثل "ها")، آن را به کلمه جاری می‌چسباند.
+* اگر ترکیب کلمات در لیست `HalfSpaceException` باشد، اصلاح انجام می‌شود.
+
+
+5. **بازسازی:** آرایه اصلاح شده مجدداً به رشته تبدیل شده و خروجی داده می‌شود.
+
+---
+
+## 🔒 امنیت و حریم خصوصی
+
+این کتابخانه و افزونه‌های مبتنی بر آن به صورت **Client-side** اجرا می‌شوند.
+
+* هیچ متنی به سرور ارسال نمی‌شود.
+* هیچ داده‌ای ذخیره نمی‌شود.
+* استفاده از `localStorage` در افزونه صرفاً جهت انتقال متن بین تب و پاپ‌آپ است و بلافاصله پاک می‌شود.
+
+---
+
+<div style="text-align: center; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; color: #666;">
+<p>توسعه‌دهنده: <a href="https://github.com/mr-shady" style="color: var(--accent-color); text-decoration: none;">Mr.Shady</a> | نسخه فعلی هسته: 1.4.5</p>
+<p>منتشر شده تحت لایسنس MIT</p>
+</div>
+
