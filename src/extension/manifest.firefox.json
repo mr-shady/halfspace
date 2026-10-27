@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extName__",
+  "short_name": "Otomatn",
+  "version": "3.0.0",
+  "description": "__MSG_extDescription__",
+  "default_locale": "fa",
+  "author": "Reza Nemati",
+  "homepage_url": "https://reza-nemati.ir",
+  "icons": {
+    "16": "icons/logo-16.png",
+    "32": "icons/logo-32.png",
+    "48": "icons/logo-48.png",
+    "128": "icons/logo-128.png"
+  },
+  "permissions": ["activeTab", "scripting", "contextMenus", "storage"],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/logo-16.png",
+      "32": "icons/logo-32.png"
+    },
+    "default_title": "__MSG_extActionTitle__",
+    "default_popup": "popup/popup.html"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": { "default": "Alt+Shift+O" },
+      "description": "__MSG_cmdOpen__"
+    },
+    "fix-selection": {
+      "suggested_key": { "default": "Alt+Shift+F" },
+      "description": "__MSG_cmdFix__"
+    }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "otomatn@reza-nemati.ir",
+      "strict_min_version": "115.0",
+      "data_collection_permissions": { "required": ["none"] }
+    }
+  }
+}

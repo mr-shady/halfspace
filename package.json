@@ -1,0 +1,17 @@
+{
+  "name": "otomatn",
+  "version": "3.0.0",
+  "description": "Otomatn — professional Persian text editor & proofreader (half-space / ZWNJ, typography, punctuation). Browser extension for Chrome and Firefox.",
+  "author": "Reza Nemati <https://reza-nemati.ir>",
+  "license": "MIT",
+  "private": true,
+  "homepage": "https://reza-nemati.ir",
+  "repository": { "type": "git", "url": "https://github.com/mr-shady/halfspace.git" },
+  "engines": { "node": ">=22.2" },
+  "scripts": {
+    "test": "node --test test/core.test.js",
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "screenshots": "node scripts/screenshots.mjs"
+  }
+}

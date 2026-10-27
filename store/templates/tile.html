@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Otomatn promo tile</title>
+<style>
+  @font-face { font-family: Vazirmatn; src: url('../../src/extension/fonts/Vazirmatn-Regular.woff2'); font-weight: 400; }
+  @font-face { font-family: Vazirmatn; src: url('../../src/extension/fonts/Vazirmatn-Bold.woff2'); font-weight: 600 900; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 100%; height: 100%; }
+  body {
+    font-family: Vazirmatn, Tahoma, sans-serif; color: #fff; overflow: hidden;
+    background:
+      radial-gradient(60% 90% at 12% 0%, rgba(99,102,241,.6), transparent 70%),
+      radial-gradient(60% 90% at 100% 100%, rgba(37,99,235,.6), transparent 70%),
+      linear-gradient(160deg, #0b1230, #101a3d);
+    display: flex; align-items: center; justify-content: center; gap: 4vmin;
+  }
+  .logo { width: 30vmin; height: 30vmin; border-radius: 22%; box-shadow: 0 2vmin 5vmin rgba(0,0,0,.45); }
+  .t { display: grid; gap: 1.2vmin; }
+  h1 { font-size: 11vmin; font-weight: 900; line-height: 1.2; }
+  h1 em { font-style: normal; background: linear-gradient(120deg, #7dd3fc, #c4b5fd); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  p { font-size: 4.2vmin; color: #c7d2ee; line-height: 1.6; }
+  small { font-size: 3vmin; color: #93a4cc; }
+</style>
+</head>
+<body>
+  <img class="logo" src="../../src/extension/icons/logo-128.png" alt="">
+  <div class="t">
+    <h1>اتو<em>متن</em></h1>
+    <p>ویراستار هوشمند متن فارسی<br>با یک کلیک</p>
+    <small>reza-nemati.ir</small>
+  </div>
+</body>
+</html>

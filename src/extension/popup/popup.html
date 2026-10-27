@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اتومتن | ویراستار هوشمند متن فارسی</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+      <symbol id="i-expand" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="i-apply" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></symbol>
+      <symbol id="i-wand" viewBox="0 0 24 24"><path d="M15 4V2M15 16v-2M8 9h2M20 9h2M17.8 11.8 19 13M17.8 6.2 19 5M3 21l9-9M12.2 6.2 11 5"/></symbol>
+      <symbol id="i-undo" viewBox="0 0 24 24"><path d="M3 7v6h6M3 13a9 9 0 1 0 3-7"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="app" id="app">
+    <header class="top">
+      <div class="brand">
+        <img src="../icons/logo-48.png" alt="" width="40" height="40">
+        <div>
+          <h1>اتومتن</h1>
+          <p>ویراستار و دستیار هوشمند متن فارسی</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="themeBtn" title="تغییر تم روشن/تیره" aria-label="تغییر تم">
+          <svg class="ic" id="themeIcon"><use href="#i-moon"/></svg>
+        </button>
+        <button class="icon-btn" id="winBtn" title="باز کردن در پنجرهٔ بزرگ" aria-label="پنجرهٔ بزرگ">
+          <svg class="ic"><use href="#i-expand"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="col col-in">
+        <div class="card">
+          <div class="card-head">
+            <label for="input">متن شما</label>
+            <div class="chips" id="inStats"></div>
+          </div>
+          <div class="field">
+            <textarea id="input" spellcheck="false" placeholder="متن فارسی خود را اینجا بنویسید یا بچسبانید…&#10;یا در یک صفحه متن را انتخاب کنید و اتومتن را باز کنید."></textarea>
+            <div class="empty" id="emptyHint">
+              <button class="link" id="sampleBtn" type="button">امتحان با یک متن نمونه ✨</button>
+            </div>
+          </div>
+          <div class="row-end">
+            <button class="ghost" id="clearBtn" type="button"><svg class="ic"><use href="#i-trash"/></svg>پاک کردن</button>
+          </div>
+        </div>
+
+        <button class="cta" id="fixBtn" type="button">
+          <svg class="ic"><use href="#i-wand"/></svg>
+          <span>ویرایش یک‌کلیکی</span>
+          <kbd>Ctrl ⏎</kbd>
+        </button>
+      </section>
+
+      <section class="col col-out">
+        <div class="summary" id="summary" hidden></div>
+
+        <div class="card result-card">
+          <nav class="tabs" role="tablist" id="tabs">
+            <button role="tab" data-tab="result" class="on">نتیجه</button>
+            <button role="tab" data-tab="compare">قبل و بعد</button>
+            <button role="tab" data-tab="report">گزارش<span class="badge" id="repBadge" hidden></span></button>
+            <button role="tab" data-tab="settings">تنظیمات</button>
+          </nav>
+
+          <div class="panel on" id="p-result">
+            <div class="placeholder" id="resPlaceholder">
+              <svg class="ic xl"><use href="#i-wand"/></svg>
+              <p>روی «ویرایش یک‌کلیکی» بزنید تا نیم‌فاصله‌ها، نشانه‌گذاری، املا و ارقام متن‌تان اصلاح شود.</p>
+            </div>
+            <textarea id="output" spellcheck="false" hidden></textarea>
+          </div>
+
+          <div class="panel" id="p-compare">
+            <div class="cmp-bar">
+              <div class="seg" id="cmpSeg">
+                <button data-cmp="inline" class="on">یکپارچه</button>
+                <button data-cmp="split">دو ستونه</button>
+              </div>
+              <div class="legend"><span class="lg del">حذف</span><span class="lg ins">افزوده</span><span class="lg zwj"><i class="zw"></i> نیم‌فاصله</span></div>
+            </div>
+            <div class="placeholder" id="cmpPlaceholder"><p>پس از ویرایش، تفاوت متن اصلی و نتیجه اینجا نشان داده می‌شود.</p></div>
+            <div id="cmpInline" class="diff" hidden></div>
+            <div id="cmpSplit" class="split" hidden>
+              <div><h5>قبل</h5><div class="diff" id="cmpBefore"></div></div>
+              <div><h5>بعد</h5><div class="diff" id="cmpAfter"></div></div>
+            </div>
+          </div>
+
+          <div class="panel" id="p-report">
+            <div class="placeholder" id="repPlaceholder"><p>گزارش دقیق تغییرات (به تفکیک قانون) پس از ویرایش نمایش داده می‌شود.</p></div>
+            <div id="report"></div>
+          </div>
+
+          <div class="panel" id="p-settings">
+            <div class="set-block">
+              <h4>سطح ویرایش</h4>
+              <div class="presets" id="presets"></div>
+            </div>
+            <div class="set-block">
+              <h4>ارقام</h4>
+              <div class="seg wide" id="digitsSeg">
+                <button data-digits="fa">فارسی ۱۲۳</button>
+                <button data-digits="en">انگلیسی 123</button>
+                <button data-digits="keep">بدون تغییر</button>
+              </div>
+            </div>
+            <div class="set-block" id="rulesBox"></div>
+            <div class="row-end">
+              <button class="ghost" id="resetBtn" type="button"><svg class="ic"><use href="#i-undo"/></svg>بازنشانی تنظیمات</button>
+            </div>
+          </div>
+
+          <div class="actions" id="actions" hidden>
+            <button class="primary" id="copyBtn" type="button"><svg class="ic"><use href="#i-copy"/></svg><span>کپی نتیجه</span></button>
+            <button class="secondary" id="applyBtn" type="button" hidden><svg class="ic"><use href="#i-apply"/></svg><span>جایگزینی در صفحه</span></button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <span>توسعه‌یافته توسط <a href="https://reza-nemati.ir" target="_blank" rel="noopener">رضا نعمتی</a> · <a href="https://reza-nemati.ir" target="_blank" rel="noopener" dir="ltr">reza-nemati.ir</a></span>
+      <span><a href="https://github.com/mr-shady/halfspace" target="_blank" rel="noopener">GitHub</a> · نسخه <span id="ver">۳</span></span>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="../core/otomatn-core.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

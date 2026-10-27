@@ -1,75 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اطلاح نیم فاصله</title>
-    <script src="FixGrammar.js" type="text/javascript"></script>
-	<script>
-		const CheckGrammar = (Element, ResultElement) => {
-			const String = document.querySelector(Element).value;
-			const Fix = new FixGrammar(String)
-
-			if (ResultElement === undefined) {
-				ResultElement = Element;
-			}
-			document.querySelector(ResultElement).value = (Fix.get());
-		}
-	</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>اتومتن | زمین بازی آنلاین</title>
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.3/Vazirmatn-font-face.css" rel="stylesheet">
+  <style>
+    :root { --bg:#f3f5fa; --card:#fff; --text:#0f172a; --muted:#64748b; --border:#e2e8f0; --p:#2563eb; --p2:#6366f1; --del:#fee2e2; --delf:#b91c1c; --ins:#dcfce7; --insf:#166534; }
+    @media (prefers-color-scheme: dark) { :root { --bg:#0a0f1e; --card:#121a2f; --text:#e8ecf7; --muted:#94a3c0; --border:#25314f; --p:#5b8cff; --p2:#8b7cff; --del:#3a1620; --delf:#fda4af; --ins:#10301f; --insf:#86efac; } }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family: Vazirmatn, Tahoma, sans-serif; line-height:1.9; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 40px; }
+    h1 { margin:0; font-size:26px; background:linear-gradient(120deg,var(--p),var(--p2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .sub { color:var(--muted); margin:2px 0 18px; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:12px; box-shadow:0 8px 24px rgba(15,23,42,.06); }
+    .card h2 { margin:0 0 8px; font-size:14px; color:var(--muted); }
+    textarea, .out { width:100%; min-height:280px; border:1px solid var(--border); border-radius:12px; padding:10px 12px; background:transparent; color:inherit; font:inherit; line-height:2; resize:vertical; white-space:pre-wrap; overflow:auto; }
+    .bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:14px 0; }
+    button, select { font:inherit; border-radius:12px; padding:8px 14px; border:1px solid var(--border); background:var(--card); color:inherit; cursor:pointer; }
+    button.go { background:linear-gradient(120deg,var(--p),var(--p2)); color:#fff; border:0; font-weight:700; padding:10px 22px; }
+    .stat { margin-inline-start:auto; color:var(--muted); font-size:13px; }
+    del { background:var(--del); color:var(--delf); border-radius:4px; padding:0 3px; }
+    ins { background:var(--ins); color:var(--insf); text-decoration:none; border-radius:4px; padding:0 3px; }
+    i.zw { display:inline-block; width:5px; height:.8em; margin:0 1px; border-radius:2px; background:var(--insf); opacity:.8; vertical-align:-.12em; }
+    footer { margin-top:22px; color:var(--muted); font-size:13px; text-align:center; }
+    a { color:var(--p); }
+  </style>
 </head>
 <body>
-    <style>
-        body{
-            background-color: #f2f2f2;
-            direction: rtl;
-            text-align: right;
-            font-family: Vazir,Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .MainBody{
-            margin: 10px auto;
-            width: 90%;
-            border: 1px solid #ccc;
-            padding:10px;
-            border-radius: 5px;
-        }
-        button{
-            border: none;
-            padding: 5px;
-            border-radius: 5px;
-            background-color: #00a65a;
-            color: #fff;
-            font-family: Vazir,Tahoma, Geneva, Verdana, sans-serif;
-        }
-        button:hover{
-            cursor: pointer;
-            background-color: #048b4e;
-        }
-        textarea{
-            border: none;
-            padding: 5px;
-            border-radius: 5px;
-            font-family: Vazir,Tahoma, Geneva, Verdana, sans-serif;
-            width: 99%;
-        }
+<div class="wrap">
+  <h1>اتومتن</h1>
+  <p class="sub">ویراستار و دستیار حرفه‌ای متن فارسی — زمین بازی آنلاین موتور (همه‌چیز در مرورگر شما اجرا می‌شود)</p>
 
-    </style>
-    <div class="MainBody">
-        <button onclick="CheckGrammar('#Grammer');">اطلاح </button>
-        <button onclick="location.reload();">رفرش </button>
-        <br /><br />
-		<textarea id="Grammer" autocomplete="off" style="height: 300px">این متن برای تست اسکرپیت اصلاح نیم فاصله می ‌باشد که می‌ توانید به راحتی از آن استفاده نمایید. کجا رفته است.چی شده است ؟از برای این تست الکی!؟
-<<ی>> اضافه در کلماتی همانند: جمله ی، برنامه ی، فاصله ی و غیره .
-<<ها>>ی جمع در کلماتی مانند: درخت ها ، کتاب ها ، خانه ها ، بانک های، تفنگ های و غیره  .
-پسوندهاییی که پس از برخی افعال مختلف می‌آیند مانند: رفته ام، آمده اند، گرفته ای، خوانده اند و غیره.
-پیشوندهایی که قبل از برخی افعال می‌آیند: می توانم، می رود، می نوشید، می خوابند، نمی خرند، نمی آیند، نمی خوری، نمی شود و غیره.
-صفاتی که با کلمه «شده» همراهند. برای مثال: گم شده، رها شده، غصب شده و غیره.
-این تست است . برای آزمایش ، ویرگول و ...
-آن ‌ها، گوی ‌ها، مثال‌ ها و ...
-نمی آید میشود میرود میانجی شنوده ها شنونده گان کننده ها کننده گان  کنندهگان کنندهها مجسمهها
-در مصدر نیز از نیم‌فاصله استفاده می‌کنند:  زمانی که مصدر را در نوشته خود به‌کار می‌برید، باید از از نیم فاصله استفاده کنید. برای مثال عباراتی مانند: گل گفتن، گل شنیدن و غیره.
-</textarea>
+  <div class="bar">
+    <button class="go" id="go">✨ ویرایش یک‌کلیکی</button>
+    <select id="preset"></select>
+    <select id="digits"><option value="fa">ارقام فارسی</option><option value="en">ارقام انگلیسی</option><option value="keep">ارقام بدون تغییر</option></select>
+    <span class="stat" id="stat"></span>
+  </div>
 
-    </div>
+  <div class="grid">
+    <div class="card"><h2>متن شما</h2><textarea id="inp" spellcheck="false">سلام دوستان،اینجا یک متن آزمایشی است که چند اشتباه رایج دارد.بخاطر همین می خواهیم ببینیم اتومتن چطور آن را اتو می کند ؟
+کتاب ها و مقاله ها را خوانده ام و نتیجه گرفته ام که نوشتن یک متن بی نقص،کار ساده ای نیست!!!
+او گفت "می رود و بر می گردد" ... ولی هیچکس باور نکرد.
+قیمت این محصول 1,250,000 تومان و تخفیف آن 20 % است ( فقط تا فردا ) مثلا همین هفته.</textarea></div>
+    <div class="card"><h2>قبل و بعد</h2><div class="out" id="out"></div></div>
+  </div>
+
+  <footer>توسعه‌یافته توسط <a href="https://reza-nemati.ir">رضا نعمتی</a> · <a href="https://reza-nemati.ir">reza-nemati.ir</a> · <a href="https://github.com/mr-shady/halfspace">GitHub</a></footer>
+</div>
+
+<script src="src/core/otomatn-core.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const vis = (s) => esc(s).replace(/‌/g, '<i class="zw"></i>');
+  $('preset').innerHTML = Object.entries(Otomatn.PRESETS).map(([k, p]) => `<option value="${k}"${k === 'standard' ? ' selected' : ''}>${p.label} — ${p.hint}</option>`).join('');
+
+  function run() {
+    const r = Otomatn.refine($('inp').value, { preset: $('preset').value, digits: $('digits').value });
+    $('out').innerHTML = Otomatn.diff($('inp').value.replace(/\r\n?/g, '\n'), r.text)
+      .map((o) => (o.type === 'eq' ? vis(o.text) : o.type === 'del' ? `<del>${vis(o.text)}</del>` : `<ins>${vis(o.text)}</ins>`)).join('');
+    $('stat').textContent = r.total + ' اصلاح انجام شد';
+    window.lastResult = r;
+  }
+  $('go').onclick = run;
+  $('preset').onchange = $('digits').onchange = run;
+  $('inp').addEventListener('input', run);
+  run();
+</script>
 </body>
 </html>

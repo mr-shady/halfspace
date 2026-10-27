@@ -1,31 +1,39 @@
-# Privacy Policy for Otomatn
+# Privacy Policy for Otomatn / سیاست حریم خصوصی اتومتن
 
-**Effective Date:** December 25, 2025
+**Effective date:** October 27, 2026 · **Developer:** Reza Nemati — [reza-nemati.ir](https://reza-nemati.ir)
 
-## Introduction
-"Otomatn" ("we", "us", or "our") is a browser extension designed to refine and format Persian text. We value your privacy and are committed to protecting your personal information. This Privacy Policy explains how our extension handles your data.
+## English
 
-## 1. Data Collection and Usage
-**We do not collect, store, share, or sell any of your personal data.**
+Otomatn ("the extension") is a Persian text editor and proofreader. **It does not collect, store remotely, share, or sell any personal data.**
 
-The "Otomatn" extension operates entirely **locally** on your device (client-side).
-* **No Remote Servers:** The text you process using this extension is never transmitted to any external server, database, or third-party service.
-* **No Analytics:** We do not use any third-party analytics tools (like Google Analytics) to track your usage.
-* **No User Accounts:** You do not need to create an account or log in to use the extension.
+* **100% local processing:** Your text is processed entirely inside your browser. It is never sent to any server, database, or third party.
+* **No analytics, no tracking, no accounts, no remote code.**
+* **Local storage only:** `chrome.storage.local` holds (a) your preferences (edit level, enabled rules, theme) and (b) a short-lived copy of selected text used to open the large editor window, which is deleted as soon as the window reads it.
 
-## 2. Permissions and Technical Access
-To function correctly, "Otomatn" requires specific browser permissions. Here is how and why we use them:
+### Permissions and why they are needed
 
-* **activeTab / scripting:** When you click the extension icon or use the context menu, we access the *currently selected text* on your active tab solely to import it into the extension's editor for formatting. This access is temporary and triggered only by your direct action.
-* **contextMenus:** This allows us to add the "Fix with Otomatn" option to your right-click menu.
-* **storage:** We use the browser's local storage (`chrome.storage.local`) strictly to temporarily pass the selected text from the web page to the extension's popup window. This data is not synced to the cloud and is cleared or overwritten with each new use.
+| Permission | Reason |
+|---|---|
+| `activeTab` | Read the text you have selected on the current tab, and write the corrected text back — only after you click the toolbar icon, use the context menu, or press the shortcut. |
+| `scripting` | Inject the small helper script that reads/replaces the selection on that tab (only with `activeTab`, on your action). |
+| `contextMenus` | Adds the "Fix with Otomatn" items to the right-click menu. |
+| `storage` | Saves your preferences locally. |
 
-## 3. Data Retention
-Since we do not collect any data, we do not have a data retention policy. The text you edit exists only within the extension's temporary memory while you are using it. Once you close the extension popup or the browser, the data is cleared.
+The extension does **not** request access to all websites (`<all_urls>`), browsing history, cookies, or the clipboard.
 
-## 4. Changes to This Policy
-We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes.
+## فارسی
 
-## 5. Contact Us
-If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us via our GitHub repository:
-[https://github.com/mr-shady/halfspace](https://github.com/mr-shady/halfspace)
+اتومتن هیچ داده‌ای را **جمع‌آوری، ارسال، ذخیرهٔ آنلاین یا فروش نمی‌کند**.
+
+* تمام پردازش‌ها **درون مرورگر** شما انجام می‌شود؛ متن هرگز به سرور یا شخص ثالثی ارسال نمی‌شود.
+* هیچ آنالیتیکس، ردیاب، حساب کاربری یا کد راه‌دور وجود ندارد.
+* فقط تنظیمات شما (سطح ویرایش، قانون‌های فعال، تم) به‌صورت **محلی** ذخیره می‌شود؛ همچنین نسخه‌ای موقت از متن انتخابی برای باز کردن پنجرهٔ بزرگ، که بلافاصله پس از خوانده‌شدن پاک می‌شود.
+* دسترسی `activeTab` و `scripting` فقط پس از کنش شما (کلیک روی آیکون، راست‌کلیک یا میان‌بر) و فقط روی همان زبانه فعال می‌شود. افزونه به همهٔ سایت‌ها، تاریخچه، کوکی‌ها و کلیپ‌بورد دسترسی ندارد.
+
+## Changes / تغییرات
+
+Any change to this policy will be published in this file. / هر تغییر در همین فایل منتشر می‌شود.
+
+## Contact / تماس
+
+[reza-nemati.ir](https://reza-nemati.ir) · reza.shady@gmail.com · [GitHub](https://github.com/mr-shady/halfspace/issues)
