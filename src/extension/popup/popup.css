@@ -57,10 +57,11 @@ body {
   line-height: 1.75;
   color: var(--text);
   background: var(--bg);
-  width: 500px;
-  min-height: 560px;
+  width: 720px;
+  height: 560px;
+  overflow: hidden;
 }
-html.win body { width: auto; min-height: 100vh; }
+html.win body { width: auto; height: auto; min-height: 100vh; overflow: auto; }
 
 .app { padding: 14px 14px 10px; }
 .ic { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
@@ -76,7 +77,9 @@ a:hover { text-decoration: underline; }
 .brand h1 { margin: 0; font-size: 19px; font-weight: 800; line-height: 1.2;
   background: linear-gradient(120deg, var(--primary), var(--primary-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .brand p { margin: 0; font-size: 11px; color: var(--muted); }
-.top-actions { display: flex; gap: 6px; }
+.top-actions { display: flex; gap: 6px; align-items: center; }
+.sample-btn { height: 34px; padding: 0 12px; border-radius: 10px; border: 1px dashed var(--primary); background: transparent; color: var(--primary); font-weight: 700; font-size: 12px; white-space: nowrap; transition: .15s; }
+.sample-btn:hover { background: var(--surface-2); }
 .icon-btn { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); transition: .15s; }
 .icon-btn:hover { color: var(--primary); border-color: var(--primary); }
 html.win #winBtn { display: none; }
@@ -85,11 +88,11 @@ html.win #winBtn { display: none; }
 .main { display: grid; gap: 12px; }
 .col { display: grid; gap: 12px; align-content: start; min-width: 0; }
 @media (min-width: 820px) {
-  .app { max-width: 1240px; margin: 0 auto; padding: 22px 24px 14px; }
-  .main { grid-template-columns: 1fr 1.15fr; gap: 18px; align-items: start; }
-  .col-in .card textarea#input { min-height: 380px; }
-  html.win #output { min-height: 330px; }
+  html.win .app { max-width: 1240px; margin: 0 auto; padding: 22px 24px 14px; }
+  html.win .main { grid-template-columns: 1fr 1.15fr; gap: 18px; align-items: start; }
 }
+html.win #input { min-height: 380px; max-height: 60vh; }
+html.win #output { min-height: 330px; max-height: 60vh; }
 
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px; }
 .card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
@@ -103,14 +106,25 @@ textarea {
   color: var(--text); font: inherit; line-height: 2; padding: 10px 12px; outline: none; transition: .15s; direction: rtl; text-align: right;
 }
 textarea:focus { border-color: var(--primary); box-shadow: var(--ring); background: var(--surface); }
-#input { min-height: 150px; max-height: 300px; }
-#output { min-height: 170px; max-height: 340px; background: var(--surface); }
 .field { position: relative; }
-.empty { position: absolute; inset: auto 0 12px 0; display: grid; place-items: center; pointer-events: none; }
-.empty .link { pointer-events: auto; }
-.empty[hidden] { display: none; }
-.link { background: none; border: 0; color: var(--primary); font-weight: 600; padding: 4px 10px; border-radius: 8px; }
-.link:hover { background: var(--surface-2); }
+
+/* ورودی/خروجی قالب‌دار (contenteditable) */
+.rich {
+  width: 100%; overflow: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); color: var(--text);
+  line-height: 2; padding: 8px 12px; outline: none; transition: .15s; direction: rtl; text-align: right; word-break: break-word;
+}
+.rich:focus { border-color: var(--primary); box-shadow: var(--ring); background: var(--surface); }
+.rich[hidden] { display: none; }
+#input:empty::before { content: attr(data-ph); color: var(--muted); white-space: pre-line; pointer-events: none; }
+#output { background: var(--surface); }
+.rich img { max-width: 100%; height: auto; border-radius: 8px; vertical-align: middle; }
+.rich a { text-decoration: underline; }
+.rich h1, .rich h2, .rich h3, .rich h4, .rich h5, .rich h6 { margin: .5em 0 .2em; line-height: 1.6; }
+.rich h1 { font-size: 1.5em; } .rich h2 { font-size: 1.35em; } .rich h3 { font-size: 1.2em; } .rich h4, .rich h5, .rich h6 { font-size: 1.05em; }
+.rich p { margin: .3em 0; }
+.rich ul, .rich ol { margin: .3em 0; padding-inline-start: 1.4em; }
+.rich blockquote { margin: .4em 0; padding-inline-start: 10px; border-inline-start: 3px solid var(--border); color: var(--muted); }
+.rich table { border-collapse: collapse; } .rich td, .rich th { border: 1px solid var(--border); padding: 2px 6px; }
 .row-end { display: flex; justify-content: flex-end; margin-top: 6px; }
 .ghost { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; color: var(--muted); padding: 4px 8px; border-radius: 8px; font-size: 12px; }
 .ghost:hover { color: var(--del-fg); background: var(--surface-2); }
@@ -237,6 +251,31 @@ ins i.zw, .split-ins i.zw { opacity: .85; background: var(--ok); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
 /* حالت نمایشی (برای تصویرهای فروشگاه): ورودی کوتاه‌تر */
-html.demo #input { min-height: 96px; max-height: 96px; overflow: hidden; }
-html.demo .empty { display: none; }
+html.demo #input { overflow: hidden; }
 html.focus .col-in, html.focus .summary { display: none; }
+
+/* ---------- پاپ‌آپ کوچک: دو ستون، بدون اسکرول صفحه ---------- */
+html:not(.win) .app { height: 560px; display: flex; flex-direction: column; padding: 10px 12px 6px; }
+html:not(.win) .top { margin-bottom: 8px; }
+html:not(.win) .brand img { width: 34px; height: 34px; }
+html:not(.win) .brand h1 { font-size: 17px; }
+html:not(.win) .main { flex: 1; min-height: 0; grid-template-columns: 1fr 1.12fr; gap: 10px; align-items: stretch; }
+html:not(.win) .col { min-height: 0; display: flex; flex-direction: column; gap: 8px; }
+html:not(.win) .col-in .card { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 10px; }
+html:not(.win) .col-in .field { flex: 1; min-height: 0; display: flex; }
+html:not(.win) #input { flex: 1; min-height: 0; }
+html:not(.win) .card-head { margin-bottom: 6px; }
+html:not(.win) .cta { padding: 11px 14px; flex: none; }
+html:not(.win) .summary { padding: 8px 12px; gap: 10px; flex: none; }
+html:not(.win) .sum-num { font-size: 24px; min-width: 34px; }
+html:not(.win) .sum-cats { display: none; }
+html:not(.win) .result-card { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+html:not(.win) .panel.on { flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column; padding: 10px; }
+html:not(.win) #output { flex: 1; min-height: 0; }
+html:not(.win) .diff { max-height: none; }
+html:not(.win) .placeholder { margin: auto; padding: 10px; }
+html:not(.win) .actions { padding: 0 10px 10px; flex: none; }
+html:not(.win) .actions button { padding: 8px 10px; }
+html:not(.win) .tabs button { padding: 6px 4px; font-size: 12px; }
+html:not(.win) .foot { margin-top: 6px; padding-top: 5px; }
+html:not(.win) .presets { grid-template-columns: repeat(2, 1fr); }

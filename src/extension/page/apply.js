@@ -18,11 +18,18 @@
   const isField = (el) =>
     !!el && (el.tagName === 'TEXTAREA' || (el.tagName === 'INPUT' && TEXT_INPUT.test(el.type))) && !el.readOnly && !el.disabled;
 
+  const htmlOfRange = (range) => {
+    const box = document.createElement('div');
+    box.appendChild(range.cloneContents());
+    return box.innerHTML;
+  };
+
   /**
    * وضعیت انتخاب فعلی را برمی‌گرداند.
-   * @returns {{text: string, editable: boolean, mode: 'selection'|'field'|'none'}}
+   * @param {{clean?: boolean}} [opts] clean: HTML پاک‌سازی‌شده و با لینک‌های مطلق (برای انتقال به پاپ‌آپ)
+   * @returns {{text: string, html?: string, editable: boolean, mode: 'selection'|'field'|'none'}}
    */
-  function getSelectionInfo() {
+  function getSelectionInfo(opts) {
     const el = activeElement();
     if (isField(el)) {
       const { selectionStart: s, selectionEnd: e, value } = el;
@@ -33,17 +40,18 @@
     const sel = getSelection();
     const text = sel ? sel.toString() : '';
     const editable = !!el && el.isContentEditable;
-    if (text) return { text, editable, mode: 'selection' };
+    const pack = (html) => (opts && opts.clean && globalThis.Otomatn.sanitizeHTML ? globalThis.Otomatn.sanitizeHTML(html, location.href) : html);
+    if (text && sel.rangeCount) return { text, html: pack(htmlOfRange(sel.getRangeAt(0))), editable, mode: 'selection' };
     if (editable) {
       const host = el.closest('[contenteditable]') || el;
       const whole = host.innerText || '';
-      return { text: whole, editable: true, mode: whole ? 'field' : 'none' };
+      return { text: whole, html: pack(host.innerHTML), editable: true, mode: whole ? 'field' : 'none' };
     }
     return { text: '', editable: false, mode: 'none' };
   }
 
-  /** متن را جایگزین انتخاب فعلی (یا کل فیلد) می‌کند. */
-  function replaceSelection(newText) {
+  /** متن (یا HTML قالب‌دار) را جایگزین انتخاب فعلی، یا کل فیلد می‌کند. */
+  function replaceSelection(newText, newHtml) {
     const el = activeElement();
     if (isField(el)) {
       const whole = el.selectionStart === el.selectionEnd;
@@ -58,7 +66,7 @@
     if (el && el.isContentEditable) {
       const sel = getSelection();
       if (!sel || sel.isCollapsed) document.execCommand('selectAll');
-      return document.execCommand('insertText', false, newText);
+      return newHtml != null ? document.execCommand('insertHTML', false, newHtml) : document.execCommand('insertText', false, newText);
     }
     return false;
   }
@@ -87,19 +95,72 @@
 
   const toFa = (n) => String(n).replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[d]);
 
-  /** اصلاح در محل با موتور اتومتن */
+  /**
+   * فقط گره‌های متنیِ داخل محدوده را ویرایش می‌کند؛ ساختار (لینک، تصویر، عنوان، پررنگ ...) دست نمی‌خورد.
+   * جایگزینی با execCommand انجام می‌شود تا Undo کار کند و ویرایشگرهای مبتنی بر JS تغییر را ببینند.
+   */
+  function fixRange(range, options) {
+    const O = globalThis.Otomatn;
+    const sel = getSelection();
+    const cac = range.commonAncestorContainer;
+    const nodes = [];
+    if (cac.nodeType === 3) nodes.push(cac);
+    else {
+      const walker = document.createTreeWalker(cac, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+    }
+    const startC = range.startContainer, startO = range.startOffset, endC = range.endContainer, endO = range.endOffset;
+    const edits = [];
+    let total = 0;
+    for (const n of nodes) {
+      if (!range.intersectsNode(n)) continue;
+      const parent = n.parentElement;
+      if (parent && parent.closest('script,style,noscript,textarea,code,pre,kbd,samp,svg')) continue;
+      const lo = n === startC ? startO : 0;
+      const hi = n === endC ? endO : n.length;
+      const m = /^(\s*)([\s\S]*?)(\s*)$/.exec(n.data.slice(lo, hi));
+      if (!m[2]) continue;
+      const r = O.refine(m[2], options);
+      if (r.text === m[2]) continue;
+      total += r.total;
+      edits.push({ node: n, from: lo, to: hi, text: m[1] + r.text + m[3] });
+    }
+    let ok = true;
+    for (const e of edits.reverse()) { // از آخر به اول تا آفست‌ها معتبر بمانند
+      const rg = document.createRange();
+      rg.setStart(e.node, e.from);
+      rg.setEnd(e.node, e.to);
+      sel.removeAllRanges();
+      sel.addRange(rg);
+      if (!document.execCommand('insertText', false, e.text)) {
+        try { e.node.replaceData(e.from, e.to - e.from, e.text); } catch { ok = false; }
+      }
+    }
+    return { total, ok };
+  }
+
+  /** اصلاح در محل با موتور اتومتن؛ در ویرایشگرهای قالب‌دار لینک، تصویر و عنوان حفظ می‌شود. */
   function fixInPlace(options) {
+    const O = globalThis.Otomatn;
     const info = getSelectionInfo();
     if (!info.text.trim()) return { handled: false, reason: 'empty' };
-    const result = globalThis.Otomatn.refine(info.text, options);
     if (!info.editable) return { handled: false, reason: 'readonly', text: info.text };
-    if (result.text === info.text) {
-      toast('متن شما از قبل بی‌نقص است');
-      return { handled: true, total: 0 };
+
+    let total;
+    let ok;
+    const el = activeElement();
+    if (isField(el)) {
+      const result = O.refine(info.text, options);
+      total = result.total;
+      ok = total === 0 ? true : replaceSelection(result.text);
+    } else {
+      let sel = getSelection();
+      if (!sel || sel.isCollapsed) { document.execCommand('selectAll'); sel = getSelection(); }
+      ({ total, ok } = fixRange(sel.getRangeAt(0), options));
     }
-    const ok = replaceSelection(result.text);
-    if (ok) toast(`${toFa(result.total)} اصلاح انجام شد`);
-    return { handled: ok, total: result.total };
+    if (total === 0) { toast('متن شما از قبل بی‌نقص است'); return { handled: true, total: 0 }; }
+    if (ok) toast(`${toFa(total)} اصلاح انجام شد`);
+    return { handled: ok, total };
   }
 
   globalThis.__OTOMATN_PAGE__ = { getSelectionInfo, replaceSelection, fixInPlace, toast };

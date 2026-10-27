@@ -14,18 +14,18 @@
       radial-gradient(900px 500px at 15% 10%, rgba(99,102,241,.55), transparent 60%),
       radial-gradient(800px 500px at 90% 100%, rgba(37,99,235,.55), transparent 60%),
       linear-gradient(160deg, #0b1230, #101a3d 55%, #0b1230);
-    display: grid; grid-template-columns: 1fr 560px; align-items: center; gap: 40px; padding: 0 80px;
+    display: grid; grid-template-columns: 1fr 720px; align-items: center; gap: 36px; padding: 0 56px;
   }
   .copy { display: grid; gap: 20px; }
   .tag { justify-self: start; font-size: 15px; font-weight: 700; padding: 6px 16px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); }
-  h1 { text-wrap: balance; font-size: 56px; line-height: 1.35; font-weight: 900; }
+  h1 { text-wrap: balance; font-size: 44px; line-height: 1.35; font-weight: 900; }
   h1 em { font-style: normal; background: linear-gradient(120deg, #7dd3fc, #c4b5fd); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  p { font-size: 22px; line-height: 1.9; color: #c7d2ee; max-width: 560px; }
-  ul { list-style: none; padding: 0; display: grid; gap: 8px; font-size: 18px; color: #e2e8f8; }
+  p { font-size: 18px; line-height: 1.9; color: #c7d2ee; max-width: 440px; }
+  ul { list-style: none; padding: 0; display: grid; gap: 8px; font-size: 16px; color: #e2e8f8; }
   li::before { content: '✓'; color: #4ade80; font-weight: 900; margin-inline-end: 10px; }
   .by { margin-top: 10px; font-size: 15px; color: #93a4cc; }
   .by b { color: #fff; }
-  .device { position: relative; width: 540px; height: 700px; border-radius: 22px; overflow: hidden; background: #fff;
+  .device { position: relative; width: 720px; height: 560px; border-radius: 22px; overflow: hidden; background: #fff;
     box-shadow: 0 40px 90px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.14); justify-self: center; }
   .device iframe { width: 100%; height: 100%; border: 0; display: block; }
 </style>
@@ -36,7 +36,7 @@
     <h1 id="title"></h1>
     <p id="sub"></p>
     <ul id="list"></ul>
-    <div class="by">توسعه‌یافته توسط <b>رضا نعمتی</b> · reza-nemati.ir</div>
+    <div class="by">توسعه‌یافته توسط <b>رضا نعمتی</b></div>
   </div>
   <div class="device"><iframe id="f" scrolling="no"></iframe></div>
 <script>

@@ -31,6 +31,7 @@
         </div>
       </div>
       <div class="top-actions">
+        <button class="sample-btn" id="sampleBtn" type="button" title="امتحان با یک متن نمونه">✨ متن نمونه</button>
         <button class="icon-btn" id="themeBtn" title="تغییر تم روشن/تیره" aria-label="تغییر تم">
           <svg class="ic" id="themeIcon"><use href="#i-moon"/></svg>
         </button>
@@ -48,10 +49,8 @@
             <div class="chips" id="inStats"></div>
           </div>
           <div class="field">
-            <textarea id="input" spellcheck="false" placeholder="متن فارسی خود را اینجا بنویسید یا بچسبانید…&#10;یا در یک صفحه متن را انتخاب کنید و اتومتن را باز کنید."></textarea>
-            <div class="empty" id="emptyHint">
-              <button class="link" id="sampleBtn" type="button">امتحان با یک متن نمونه ✨</button>
-            </div>
+            <div id="input" class="rich" contenteditable="true" spellcheck="false" dir="rtl" role="textbox" aria-multiline="true"
+                 data-ph="متن فارسی خود را اینجا بنویسید یا بچسبانید؛ لینک، تصویر و عنوان‌ها حفظ می‌شوند.&#10;یا در صفحه‌ای متن را انتخاب کنید و اتومتن را باز کنید."></div>
           </div>
           <div class="row-end">
             <button class="ghost" id="clearBtn" type="button"><svg class="ic"><use href="#i-trash"/></svg>پاک کردن</button>
@@ -81,7 +80,7 @@
               <svg class="ic xl"><use href="#i-wand"/></svg>
               <p>روی «ویرایش یک‌کلیکی» بزنید تا نیم‌فاصله‌ها، نشانه‌گذاری، املا و ارقام متن‌تان اصلاح شود.</p>
             </div>
-            <textarea id="output" spellcheck="false" hidden></textarea>
+            <div id="output" class="rich" contenteditable="true" spellcheck="false" dir="rtl" role="textbox" aria-multiline="true" hidden></div>
           </div>
 
           <div class="panel" id="p-compare">
@@ -133,7 +132,7 @@
     </main>
 
     <footer class="foot">
-      <span>توسعه‌یافته توسط <a href="https://reza-nemati.ir" target="_blank" rel="noopener">رضا نعمتی</a> · <a href="https://reza-nemati.ir" target="_blank" rel="noopener" dir="ltr">reza-nemati.ir</a></span>
+      <span>توسعه‌یافته توسط <a href="https://reza-nemati.ir" target="_blank" rel="noopener">رضا نعمتی</a></span>
       <span><a href="https://github.com/mr-shady/halfspace" target="_blank" rel="noopener">GitHub</a> · نسخه <span id="ver">۳</span></span>
     </footer>
   </div>
@@ -141,6 +140,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="../core/otomatn-core.js"></script>
+  <script src="../core/otomatn-dom.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

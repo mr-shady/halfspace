@@ -1,6 +1,6 @@
 # Privacy Policy for Otomatn / سیاست حریم خصوصی اتومتن
 
-**Effective date:** October 27, 2026 · **Developer:** Reza Nemati — [reza-nemati.ir](https://reza-nemati.ir)
+**Effective date:** October 27, 2026 · **Developer:** Reza Nemati — [Website](https://reza-nemati.ir)
 
 ## English
 
@@ -36,4 +36,4 @@ Any change to this policy will be published in this file. / هر تغییر در
 
 ## Contact / تماس
 
-[reza-nemati.ir](https://reza-nemati.ir) · reza.shady@gmail.com · [GitHub](https://github.com/mr-shady/halfspace/issues)
+[Reza Nemati](https://reza-nemati.ir) · reza.shady@gmail.com · [GitHub](https://github.com/mr-shady/halfspace/issues)

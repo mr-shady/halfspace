@@ -5,7 +5,7 @@
  *   releases/otomatn-*-vX.Y.Z.zip   → بسته‌های آمادهٔ آپلود
  * بدون هیچ وابستگی؛ فقط Node.js ≥ 22.2.
  */
-import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
 import { deflateRawSync, crc32 } from 'node:zlib';
 import { fileURLToPath } from 'node:url';
@@ -81,7 +81,14 @@ function zipDir(dir, outFile) {
   end.writeUInt16LE(files.length, 10);
   end.writeUInt32LE(centralBuf.length, 12);
   end.writeUInt32LE(offset, 16);
-  writeFileSync(outFile, Buffer.concat([...chunks, centralBuf, end]));
+  const data = Buffer.concat([...chunks, centralBuf, end]);
+  try {
+    writeFileSync(outFile, data);
+  } catch {
+    // ویندوز: اگر فایل در مرورگر باز است نمی‌شود رویش نوشت، ولی می‌شود آن را تغییر نام داد
+    renameSync(outFile, `${outFile}.${Date.now()}.old`);
+    writeFileSync(outFile, data);
+  }
   return files.length;
 }
 
@@ -94,6 +101,7 @@ for (const target of TARGETS) {
   cpSync(SRC, out, { recursive: true, filter: (p) => !/manifest\.(chrome|firefox)\.json$/.test(p) });
   mkdirSync(join(out, 'core'), { recursive: true });
   cpSync(CORE, join(out, 'core', 'otomatn-core.js'));
+  cpSync(join(ROOT, 'src', 'core', 'otomatn-dom.js'), join(out, 'core', 'otomatn-dom.js'));
 
   const manifest = JSON.parse(readFileSync(join(SRC, `manifest.${target}.json`), 'utf8'));
   manifest.version = pkg.version;
@@ -109,7 +117,7 @@ for (const target of TARGETS) {
   for (const r of refs) if (!existsSync(join(out, r))) fail(`${target}: فایل ${r} پیدا نشد`);
   const fa = JSON.parse(readFileSync(join(out, '_locales/fa/messages.json'), 'utf8'));
   if ([...fa.extDescription.message].length > 132) fail('توضیح افزونه از ۱۳۲ نویسه بیشتر است');
-  if (!/reza-nemati\.ir/.test(fa.extDescription.message)) fail('نام توسعه‌دهنده در توضیحات نیست');
+  if (!/رضا نعمتی/.test(fa.extDescription.message)) fail('نام توسعه‌دهنده در توضیحات نیست');
 
   const zip = join(RELEASES, `otomatn-${target}-v${pkg.version}.zip`);
   const n = zipDir(out, zip);

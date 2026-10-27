@@ -12,7 +12,7 @@
 
 **ویراستار و دستیار حرفه‌ای متن فارسی — با یک کلیک**
 
-نیم‌فاصله، نگارش، نشانه‌گذاری، املا، ارقام و صفحه‌آرایی؛ کاملاً آفلاین. توسعه‌یافته توسط [رضا نعمتی](https://reza-nemati.ir) — [reza-nemati.ir](https://reza-nemati.ir)
+نیم‌فاصله، نگارش، نشانه‌گذاری، املا، ارقام و صفحه‌آرایی؛ کاملاً آفلاین. توسعه‌یافته توسط [رضا نعمتی](https://reza-nemati.ir)
 
 ![قبل و بعد](https://raw.githubusercontent.com/mr-shady/halfspace/main/store/screenshots/01-before-after.png)
 
@@ -70,5 +70,5 @@ Otomatn.analyze(text);         // آمار متن
 ---
 
 <div style="text-align: center; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9em; color: #666;">
-<p>توسعه‌یافته توسط <a href="https://reza-nemati.ir">رضا نعمتی</a> · <a href="https://reza-nemati.ir">reza-nemati.ir</a> | نسخهٔ ۳٫۰٫۰ · لایسنس MIT</p>
+<p>توسعه‌یافته توسط <a href="https://reza-nemati.ir">رضا نعمتی</a> | نسخهٔ ۳٫۰٫۰ · لایسنس MIT</p>
 </div>

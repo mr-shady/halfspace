@@ -1,6 +1,6 @@
 {
   "extName": { "message": "Otomatn | Persian Text Editor" },
-  "extDescription": { "message": "Professional Persian proofreader: half-spaces (ZWNJ), typography and punctuation in one click. Developed by Reza Nemati (reza-nemati.ir)" },
+  "extDescription": { "message": "Professional Persian proofreader: half-spaces (ZWNJ), typography and punctuation in one click. Developed by Reza Nemati" },
   "extActionTitle": { "message": "Otomatn: one-click Persian text editor" },
   "cmdOpen": { "message": "Open Otomatn" },
   "cmdFix": { "message": "Fix the selected text in place" }

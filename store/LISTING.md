@@ -6,9 +6,9 @@
 ## نام و توضیح کوتاه (Summary)
 
 - **نام:** اتومتن | ویراستار هوشمند متن فارسی
-- **توضیح کوتاه (≤ ۱۳۲ نویسه):** ویراستار و دستیار حرفه‌ای متن فارسی؛ نیم‌فاصله، نگارش و نشانه‌گذاری با یک کلیک. توسعه‌یافته توسط رضا نعمتی (reza-nemati.ir)
+- **توضیح کوتاه (≤ ۱۳۲ نویسه):** ویراستار و دستیار حرفه‌ای متن فارسی؛ نیم‌فاصله، نگارش و نشانه‌گذاری با یک کلیک. توسعه‌یافته توسط رضا نعمتی
 - **English name:** Otomatn | Persian Text Editor
-- **English summary:** Professional Persian proofreader: half-spaces (ZWNJ), typography and punctuation in one click. Developed by Reza Nemati (reza-nemati.ir)
+- **English summary:** Professional Persian proofreader: half-spaces (ZWNJ), typography and punctuation in one click. Developed by Reza Nemati
 
 ## توضیح کامل (فارسی)
 
@@ -23,6 +23,7 @@
 • صفحه‌آرایی: فاصله‌ها و خط‌های خالی اضافی، فاصله بین فارسی و لاتین، اتصال سطرهای شکستهٔ PDF
 
 🚀 امکانات
+• حفظ قالب: لینک، تصویر، عنوان و پررنگ دست نمی‌خورند؛ فقط متن اصلاح می‌شود
 • قبل و بعد: نمای یکپارچه و دو ستونه، با نشانگر نیم‌فاصله
 • گزارش دقیق تغییرات به تفکیک قانون، با نمونه
 • اصلاح در محل در فیلدهای متنی (Alt+Shift+F یا راست‌کلیک)
@@ -35,7 +36,7 @@
 
 لینک‌ها، ایمیل‌ها و کدها هرگز تغییر نمی‌کنند.
 
-توسعه‌یافته توسط رضا نعمتی — reza-nemati.ir
+توسعه‌یافته توسط رضا نعمتی
 کد منبع (MIT): https://github.com/mr-shady/halfspace
 
 ## Full description (English)
@@ -46,7 +47,7 @@ Fixes: half-spaces / ZWNJ (می‌رود, کتاب‌ها, رفته‌ام, بز
 
 Features: inline & side-by-side diff, per-rule report, in-place fixing in text fields (Alt+Shift+F / context menu), 4 presets and 28 rules, light/dark themes. 100% offline — your text never leaves the browser.
 
-Developed by Reza Nemati — reza-nemati.ir · Source (MIT): https://github.com/mr-shady/halfspace
+Developed by Reza Nemati · Source (MIT): https://github.com/mr-shady/halfspace
 
 ## دسته‌بندی و برچسب‌ها
 

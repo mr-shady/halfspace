@@ -55,6 +55,7 @@
     settings: { preset: 'standard', rules: {}, digits: 'fa', theme: 'auto', showZw: true, cmp: window.innerWidth >= 820 ? 'split' : 'inline' },
     result: null,
     ran: false,
+    dirty: false,
     source: null, // { tabId, frameId, editable, mode }
     tab: 'result',
   };
@@ -66,6 +67,19 @@
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   /** نمایش نیم‌فاصله به شکل نشانگر بصری */
   const vis = (s) => esc(s).replace(/‌/g, '<i class="zw"></i>');
+
+  /** متن ساده و HTML فیلدهای قالب‌دار */
+  const inputEl = () => $('#input');
+  const inputText = () => O.textOf(inputEl());
+  function setInputPlain(text) {
+    const el = inputEl();
+    el.textContent = '';
+    String(text).split(/\r\n?|\n/).forEach((line, i) => {
+      if (i) el.appendChild(document.createElement('br'));
+      el.appendChild(document.createTextNode(line));
+    });
+  }
+  const setInputHTML = (html) => { inputEl().innerHTML = O.sanitizeHTML(html); };
 
   const readingTime = (sec) => (sec < 60 ? `${toFa(sec)} ثانیه` : `${toFa(Math.ceil(sec / 60))} دقیقه`);
 
@@ -98,8 +112,7 @@
    * آمار ورودی
    * ------------------------------------------------------------------ */
   function renderInStats() {
-    const text = $('#input').value;
-    $('#emptyHint').hidden = text.length > 0;
+    const text = inputText();
     if (!text.trim()) { $('#inStats').innerHTML = ''; return; }
     const a = O.analyze(text);
     $('#inStats').innerHTML =
@@ -112,16 +125,17 @@
    * اجرای ویرایش
    * ------------------------------------------------------------------ */
   function run({ silent = false } = {}) {
-    const input = $('#input').value;
-    if (!input.trim()) {
+    if (!inputText().trim()) {
       if (!silent) { toast('ابتدا متنی وارد کنید'); $('#input').focus(); }
       return;
     }
-    const r = O.refine(input, refineOptions());
-    state.result = { ...r, original: input.replace(/\r\n?/g, '\n') };
+    // روی نسخهٔ کپی کار می‌کنیم: فقط گره‌های متنی تغییر می‌کنند و لینک/تصویر/عنوان‌ها می‌مانند
+    const box = inputEl().cloneNode(true);
+    const r = O.refineDOM(box, refineOptions());
+    state.result = r;
     state.ran = true;
 
-    $('#output').value = r.text;
+    $('#output').innerHTML = box.innerHTML;
     $('#output').hidden = false;
     $('#resPlaceholder').hidden = true;
     $('#actions').hidden = false;
@@ -257,37 +271,45 @@
   /* ------------------------------------------------------------------
    * ارتباط با صفحه
    * ------------------------------------------------------------------ */
-  const PAGE_FILES = ['core/otomatn-core.js', 'page/apply.js'];
+  const PAGE_FILES = ['core/otomatn-core.js', 'core/otomatn-dom.js', 'page/apply.js'];
 
+  /**
+   * فایرفاکس اگر حتی یک iframe ناهمسرچشمه باشد کل allFrames را رد می‌کند؛
+   * پس اول همهٔ فریم‌ها و در صورت خطا فقط فریم اصلی را امتحان می‌کنیم.
+   */
   async function readFromPage() {
     if (!isExtension) return null;
-    try {
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      if (!tab || tab.id === undefined) return null;
-      const target = { tabId: tab.id, allFrames: true };
-      await chrome.scripting.executeScript({ target, files: PAGE_FILES });
-      const res = await chrome.scripting.executeScript({ target, func: () => globalThis.__OTOMATN_PAGE__.getSelectionInfo() });
-      const hit = res.find((r) => r.result && r.result.text && r.result.text.trim());
-      if (!hit) return null;
-      return { ...hit.result, tabId: tab.id, frameId: hit.frameId };
-    } catch {
-      return null; // صفحهٔ محافظت‌شده (chrome://، فروشگاه افزونه و ...)
+    let tab;
+    try { [tab] = await chrome.tabs.query({ active: true, currentWindow: true }); } catch { return null; }
+    if (!tab || tab.id === undefined) return null;
+    for (const target of [{ tabId: tab.id, allFrames: true }, { tabId: tab.id, frameIds: [0] }]) {
+      try {
+        await chrome.scripting.executeScript({ target, files: PAGE_FILES });
+        const res = await chrome.scripting.executeScript({ target, func: () => globalThis.__OTOMATN_PAGE__.getSelectionInfo({ clean: true }) });
+        const hit = res.find((r) => r.result && r.result.text && r.result.text.trim());
+        return hit ? { ...hit.result, tabId: tab.id, frameId: hit.frameId } : null;
+      } catch { /* تلاش بعدی؛ صفحهٔ محافظت‌شده (chrome://، فروشگاه افزونه و ...) */ }
     }
+    return null;
   }
 
   async function applyToPage() {
     const src = state.source;
     if (!src) return;
-    const text = $('#output').value;
+    const text = O.textOf($('#output'));
+    const html = src.field ? null : $('#output').innerHTML;
+    // متن در پاپ‌آپ دست نخورده؟ پس ساختار اصلی صفحه را همان‌جا و فقط در گره‌های متنی اصلاح می‌کنیم
+    const inPlace = !state.dirty && !src.field && src.editable;
     try {
       const res = await chrome.scripting.executeScript({
         target: { tabId: src.tabId, frameIds: [src.frameId] },
-        func: (t) => {
-          const ok = globalThis.__OTOMATN_PAGE__.replaceSelection(t);
-          if (ok) globalThis.__OTOMATN_PAGE__.toast('متن با اتومتن جایگزین شد');
+        func: (t, h, opts, keep) => {
+          const P = globalThis.__OTOMATN_PAGE__;
+          const ok = keep ? P.fixInPlace(opts).handled : P.replaceSelection(t, h);
+          if (ok && !keep) P.toast('متن با اتومتن جایگزین شد');
           return ok;
         },
-        args: [text],
+        args: [text, html, refineOptions(), inPlace],
       });
       if (res[0] && res[0].result) {
         toast('در صفحه جایگزین شد ✓');
@@ -302,14 +324,23 @@
    * کپی
    * ------------------------------------------------------------------ */
   async function copyResult() {
-    const text = $('#output').value;
+    const out = $('#output');
+    const html = out.innerHTML;
+    const text = O.textOf(out);
     try {
-      await navigator.clipboard.writeText(text);
+      if (window.ClipboardItem && navigator.clipboard.write) {
+        await navigator.clipboard.write([new ClipboardItem({
+          'text/html': new Blob([html], { type: 'text/html' }),
+          'text/plain': new Blob([text], { type: 'text/plain' }),
+        })]);
+      } else throw new Error('no rich clipboard');
     } catch {
-      const out = $('#output');
-      out.select();
+      const range = document.createRange();
+      range.selectNodeContents(out);
+      const sel = getSelection();
+      sel.removeAllRanges(); sel.addRange(range);
       document.execCommand('copy');
-      out.setSelectionRange(0, 0);
+      sel.removeAllRanges();
     }
     const btn = $('#copyBtn');
     btn.classList.add('done');
@@ -330,19 +361,30 @@
     $('#copyBtn').addEventListener('click', copyResult);
     $('#applyBtn').addEventListener('click', applyToPage);
     $('#clearBtn').addEventListener('click', () => {
-      $('#input').value = '';
+      inputEl().innerHTML = '';
       state.ran = false; state.result = null; state.source = null;
-      $('#output').hidden = true; $('#output').value = '';
+      $('#output').hidden = true; $('#output').innerHTML = '';
       $('#resPlaceholder').hidden = false; $('#actions').hidden = true; $('#summary').hidden = true;
       $('#cmpPlaceholder').hidden = false; $('#cmpInline').hidden = true; $('#cmpSplit').hidden = true;
       $('#repPlaceholder').hidden = false; $('#report').innerHTML = ''; $('#repBadge').hidden = true;
       renderInStats();
       $('#input').focus();
     });
-    $('#sampleBtn').addEventListener('click', () => { $('#input').value = SAMPLE; renderInStats(); run({ silent: true }); });
+    $('#sampleBtn').addEventListener('click', () => { setInputPlain(SAMPLE); renderInStats(); run({ silent: true }); });
+
+    // چسباندن/رها کردن: قالب (لینک، تصویر، عنوان و ...) حفظ می‌شود، اما اسکریپت و استایل‌های ناامن پاک می‌شوند
+    const insertClean = (e, dt) => {
+      e.preventDefault();
+      const html = dt.getData('text/html');
+      if (html) document.execCommand('insertHTML', false, O.sanitizeHTML(html));
+      else document.execCommand('insertText', false, dt.getData('text/plain'));
+    };
+    $('#input').addEventListener('paste', (e) => insertClean(e, e.clipboardData));
+    $('#input').addEventListener('drop', (e) => insertClean(e, e.dataTransfer));
 
     let t;
     $('#input').addEventListener('input', () => {
+      state.dirty = true;
       renderInStats();
       clearTimeout(t);
       if (state.ran) t = setTimeout(() => run({ silent: true }), 250);
@@ -390,7 +432,7 @@
     });
     $('#winBtn').addEventListener('click', async () => {
       if (isExtension) {
-        await store.set(PENDING_KEY, $('#input').value);
+        await store.set(PENDING_KEY, { html: inputEl().innerHTML });
         await chrome.windows.create({ url: chrome.runtime.getURL('popup/popup.html?window=1'), type: 'popup', width: 1000, height: 760 });
         window.close();
       }
@@ -417,18 +459,19 @@
       const pending = isWindow ? await store.get(PENDING_KEY) : undefined;
       if (pending) {
         await store.remove(PENDING_KEY);
-        $('#input').value = pending;
+        if (typeof pending === 'string') setInputPlain(pending);
+        else setInputHTML(pending.html || '');
         loaded = true;
       } else if (!isWindow) {
         const info = await readFromPage();
         if (info) {
-          $('#input').value = info.text;
-          state.source = { tabId: info.tabId, frameId: info.frameId, editable: info.editable, mode: info.mode };
+          if (info.html) setInputHTML(info.html); else setInputPlain(info.text);
+          state.source = { tabId: info.tabId, frameId: info.frameId, editable: info.editable, mode: info.mode, field: !info.html };
           loaded = true;
         }
       }
     } else if (params.has('sample')) {
-      $('#input').value = SAMPLE;
+      setInputPlain(SAMPLE);
       loaded = true;
     }
 

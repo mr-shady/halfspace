@@ -9,7 +9,25 @@ const MENU_FIX = 'otomatn-fix-inplace';
 const MENU_EDITOR = 'otomatn-open-editor';
 const SETTINGS_KEY = 'otomatn_settings';
 const PENDING_KEY = 'otomatn_content';
-const PAGE_FILES = ['core/otomatn-core.js', 'page/apply.js'];
+const PAGE_FILES = ['core/otomatn-core.js', 'core/otomatn-dom.js', 'page/apply.js'];
+
+/**
+ * اسکریپت کمکی را تزریق و یک تابع را اجرا می‌کند.
+ * فایرفاکس اگر حتی یک فریم ناهمسرچشمه (iframe) وجود داشته باشد کل allFrames را رد می‌کند؛
+ * در این حالت فقط فریم اصلی را امتحان می‌کنیم.
+ */
+async function runInPage(tabId, func, args = []) {
+  let lastError;
+  for (const target of [{ tabId, allFrames: true }, { tabId, frameIds: [0] }]) {
+    try {
+      await chrome.scripting.executeScript({ target, files: PAGE_FILES });
+      return await chrome.scripting.executeScript({ target, func, args });
+    } catch (e) {
+      lastError = e;
+    }
+  }
+  throw lastError;
+}
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.removeAll(() => {
@@ -54,15 +72,9 @@ function flashBadge(text) {
 /** متن انتخاب‌شده را در همان صفحه اصلاح می‌کند؛ اگر ممکن نبود، ویرایشگر را باز می‌کند. */
 async function fixSelection(tab) {
   if (!tab || tab.id === undefined) return;
-  const target = { tabId: tab.id, allFrames: true };
   try {
-    await chrome.scripting.executeScript({ target, files: PAGE_FILES });
     const options = await loadOptions();
-    const results = await chrome.scripting.executeScript({
-      target,
-      func: (opts) => globalThis.__OTOMATN_PAGE__.fixInPlace(opts),
-      args: [options],
-    });
+    const results = await runInPage(tab.id, (opts) => globalThis.__OTOMATN_PAGE__.fixInPlace(opts), [options]);
     const hits = results.map((r) => r.result).filter(Boolean);
     const done = hits.find((r) => r.handled);
     if (done) {
@@ -84,15 +96,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     // selectionText خط‌های جدید را حفظ نمی‌کند؛ از خود صفحه می‌خوانیم.
     let text = info.selectionText;
     try {
-      const res = await chrome.scripting.executeScript({
-        target: { tabId: tab.id, allFrames: true },
-        files: PAGE_FILES,
-      }).then(() =>
-        chrome.scripting.executeScript({
-          target: { tabId: tab.id, allFrames: true },
-          func: () => globalThis.__OTOMATN_PAGE__.getSelectionInfo().text,
-        }),
-      );
+      const res = await runInPage(tab.id, () => globalThis.__OTOMATN_PAGE__.getSelectionInfo().text);
       text = res.map((r) => r.result).find(Boolean) || text;
     } catch {
       /* از متن منو استفاده می‌شود */
