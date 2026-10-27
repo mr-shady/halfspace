@@ -18,7 +18,7 @@
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.Otomatn = api;
-})(typeof self !== 'undefined' ? self : this, function () {
+})(typeof globalThis !== 'undefined' ? globalThis : typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
   /* ================================================================

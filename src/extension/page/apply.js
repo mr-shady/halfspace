@@ -40,7 +40,11 @@
     const sel = getSelection();
     const text = sel ? sel.toString() : '';
     const editable = !!el && el.isContentEditable;
-    const pack = (html) => (opts && opts.clean && globalThis.Otomatn.sanitizeHTML ? globalThis.Otomatn.sanitizeHTML(html, location.href) : html);
+    const clean = globalThis.Otomatn && globalThis.Otomatn.sanitizeHTML;
+    const pack = (html) => {
+      if (!(opts && opts.clean && clean)) return html;
+      try { return clean(html, location.href); } catch { return ''; }
+    };
     if (text && sel.rangeCount) return { text, html: pack(htmlOfRange(sel.getRangeAt(0))), editable, mode: 'selection' };
     if (editable) {
       const host = el.closest('[contenteditable]') || el;

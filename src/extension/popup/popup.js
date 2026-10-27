@@ -282,14 +282,16 @@
     let tab;
     try { [tab] = await chrome.tabs.query({ active: true, currentWindow: true }); } catch { return null; }
     if (!tab || tab.id === undefined) return null;
+    let lastError = '';
     for (const target of [{ tabId: tab.id, allFrames: true }, { tabId: tab.id, frameIds: [0] }]) {
       try {
         await chrome.scripting.executeScript({ target, files: PAGE_FILES });
         const res = await chrome.scripting.executeScript({ target, func: () => globalThis.__OTOMATN_PAGE__.getSelectionInfo({ clean: true }) });
         const hit = res.find((r) => r.result && r.result.text && r.result.text.trim());
         return hit ? { ...hit.result, tabId: tab.id, frameId: hit.frameId } : null;
-      } catch { /* تلاش بعدی؛ صفحهٔ محافظت‌شده (chrome://، فروشگاه افزونه و ...) */ }
+      } catch (e) { lastError = (e && e.message) || String(e); /* تلاش بعدی؛ صفحهٔ محافظت‌شده (about:، فروشگاه افزونه و ...) */ }
     }
+    state.readError = lastError;
     return null;
   }
 
@@ -479,6 +481,9 @@
     if (loaded) run({ silent: true });
     const tab = params.get('tab');
     if (tab) setTab(tab);
+    if (!loaded && state.readError) {
+      $('#input').dataset.ph = 'دسترسی به این صفحه ممکن نیست (' + state.readError.slice(0, 90) + ').\nمتن را اینجا بچسبانید.';
+    }
     if (!loaded) $('#input').focus();
   }
 
