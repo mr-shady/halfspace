@@ -719,13 +719,14 @@
       if (A.length) mid.push({ type: 'del', text: A.join('') });
       if (B.length) mid.push({ type: 'ins', text: B.join('') });
     } else {
-      // LCS
+      // LCS وزن‌دار: هم‌ترازی واژه‌ها مهم است، نه فاصله‌ها (وگرنه واژه‌های سالم هم «تغییرکرده» دیده می‌شوند)
       const n = A.length;
       const m = B.length;
-      const dp = Array.from({ length: n + 1 }, () => new Uint32Array(m + 1));
+      const weight = (tok) => (/^\s+$/.test(tok) ? 0.05 : 1);
+      const dp = Array.from({ length: n + 1 }, () => new Float64Array(m + 1));
       for (let i = n - 1; i >= 0; i--)
         for (let j = m - 1; j >= 0; j--)
-          dp[i][j] = A[i] === B[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+          dp[i][j] = A[i] === B[j] ? dp[i + 1][j + 1] + weight(A[i]) : Math.max(dp[i + 1][j], dp[i][j + 1]);
       let i = 0;
       let j = 0;
       while (i < n && j < m) {
@@ -752,6 +753,14 @@
       if (insBuf) push('ins', insBuf);
       delBuf = insBuf = '';
     };
+    // فاصلهٔ تنها میان دو تغییر جزو همان تغییر حساب می‌شود تا تکه‌ها یکپارچه دیده شوند
+    for (let k = 1; k < mid.length - 1; k++) {
+      const op = mid[k];
+      if (op.type === 'eq' && /^\s+$/.test(op.text) && mid[k - 1].type !== 'eq' && mid[k + 1].type !== 'eq') {
+        mid.splice(k, 1, { type: 'del', text: op.text }, { type: 'ins', text: op.text });
+        k++;
+      }
+    }
     for (const op of mid) {
       if (op.type === 'eq') {
         flush();

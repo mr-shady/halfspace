@@ -78,12 +78,12 @@
 
 ## 📦 نصب
 
-بسته‌های آمادهٔ انتشار در پوشهٔ [`releases/`](releases) قرار دارند:
+**از فروشگاه رسمی (پیشنهادی؛ به‌روزرسانی خودکار):**
 
-| مرورگر | فایل |
-|---|---|
-| Google Chrome / Edge / Brave | [`otomatn-chrome-v3.0.0.zip`](releases/otomatn-chrome-v3.0.0.zip) |
-| Mozilla Firefox | [`otomatn-firefox-v3.0.0.zip`](releases/otomatn-firefox-v3.0.0.zip) |
+| مرورگر | فروشگاه | بستهٔ دستی |
+|---|---|---|
+| Google Chrome / Edge / Brave | [**Chrome Web Store**](https://chromewebstore.google.com/detail/otomatn-%D8%A7%D8%AA%D9%88%D9%85%D8%AA%D9%86/oefampgfafohochdnpcfmjaghillbidp) | [`otomatn-chrome-v3.0.0.zip`](releases/otomatn-chrome-v3.0.0.zip) |
+| Mozilla Firefox | [**Firefox Add-ons**](https://addons.mozilla.org/firefox/addon/otomatn/) | [`otomatn-firefox-v3.0.0.zip`](releases/otomatn-firefox-v3.0.0.zip) |
 
 **نصب دستی (حالت توسعه‌دهنده):**
 

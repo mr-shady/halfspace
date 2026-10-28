@@ -65,6 +65,14 @@ const JOBS = [
     }),
   },
   { file: '05-window.png', page: 'dist/chrome/popup/popup.html?window=1&sample=1&tab=compare&theme=light&cmp=split', w: 1280, h: 800 },
+  // تصاویر خام پاپ‌آپ (برای سایت) با کیفیت ۲ برابر
+  ...[
+    ['popup-result', 'tab=result&theme=light'],
+    ['popup-compare', 'tab=compare&theme=light&cmp=inline'],
+    ['popup-report', 'tab=report&theme=light'],
+    ['popup-settings', 'tab=settings&theme=light'],
+    ['popup-dark', 'tab=compare&theme=dark&cmp=split'],
+  ].map(([name, q]) => ({ file: `${name}.png`, page: `dist/chrome/popup/popup.html?sample=1&${q}`, w: 720, h: 560, scale: 2 })),
   { file: 'promo-small-440x280.png', page: 'store/templates/tile.html', w: 440, h: 280 },
   { file: 'promo-marquee-1400x560.png', page: 'store/templates/tile.html', w: 1400, h: 560 },
 ];
@@ -76,7 +84,7 @@ for (const job of JOBS) {
   execFileSync(
     browser,
     [
-      '--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1',
+      '--headless=new', '--disable-gpu', '--hide-scrollbars', `--force-device-scale-factor=${job.scale || 1}`,
       '--allow-file-access-from-files', '--virtual-time-budget=4000',
       `--window-size=${w},${h}`, `--screenshot=${out}`, url,
     ],
