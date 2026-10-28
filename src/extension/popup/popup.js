@@ -79,7 +79,7 @@
       el.appendChild(document.createTextNode(line));
     });
   }
-  const setInputHTML = (html) => { inputEl().innerHTML = O.sanitizeHTML(html); };
+  const setInputHTML = (html, base) => { inputEl().innerHTML = O.sanitizeHTML(html, base); };
 
   const readingTime = (sec) => (sec < 60 ? `${toFa(sec)} ثانیه` : `${toFa(Math.ceil(sec / 60))} دقیقه`);
 
@@ -285,8 +285,7 @@
     let lastError = '';
     for (const target of [{ tabId: tab.id, allFrames: true }, { tabId: tab.id, frameIds: [0] }]) {
       try {
-        await chrome.scripting.executeScript({ target, files: PAGE_FILES });
-        const res = await chrome.scripting.executeScript({ target, func: () => globalThis.__OTOMATN_PAGE__.getSelectionInfo({ clean: true }) });
+        const res = await chrome.scripting.executeScript({ target, func: otomatnProbe }); // page/probe.js — مستقل از فایل‌های تزریقی
         const hit = res.find((r) => r.result && r.result.text && r.result.text.trim());
         return hit ? { ...hit.result, tabId: tab.id, frameId: hit.frameId } : null;
       } catch (e) { lastError = (e && e.message) || String(e); /* تلاش بعدی؛ صفحهٔ محافظت‌شده (about:، فروشگاه افزونه و ...) */ }
@@ -303,8 +302,10 @@
     // متن در پاپ‌آپ دست نخورده؟ پس ساختار اصلی صفحه را همان‌جا و فقط در گره‌های متنی اصلاح می‌کنیم
     const inPlace = !state.dirty && !src.field && src.editable;
     try {
+      const target = { tabId: src.tabId, frameIds: [src.frameId] };
+      await chrome.scripting.executeScript({ target, files: PAGE_FILES });
       const res = await chrome.scripting.executeScript({
-        target: { tabId: src.tabId, frameIds: [src.frameId] },
+        target,
         func: (t, h, opts, keep) => {
           const P = globalThis.__OTOMATN_PAGE__;
           const ok = keep ? P.fixInPlace(opts).handled : P.replaceSelection(t, h);
@@ -462,13 +463,14 @@
       if (pending) {
         await store.remove(PENDING_KEY);
         if (typeof pending === 'string') setInputPlain(pending);
-        else setInputHTML(pending.html || '');
+        else if (pending.html) setInputHTML(pending.html, pending.href);
+        else setInputPlain(pending.text || '');
         loaded = true;
       } else if (!isWindow) {
         const info = await readFromPage();
         if (info) {
-          if (info.html) setInputHTML(info.html); else setInputPlain(info.text);
-          state.source = { tabId: info.tabId, frameId: info.frameId, editable: info.editable, mode: info.mode, field: !info.html };
+          if (info.html) setInputHTML(info.html, info.href); else setInputPlain(info.text);
+          state.source = { tabId: info.tabId, frameId: info.frameId, editable: info.editable, mode: info.mode, field: !!info.field || !info.html };
           loaded = true;
         }
       }

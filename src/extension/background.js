@@ -5,6 +5,8 @@
  */
 'use strict';
 
+if (typeof importScripts === 'function') importScripts('page/probe.js'); // Chrome service worker (در فایرفاکس از manifest بارگذاری می‌شود)
+
 const MENU_FIX = 'otomatn-fix-inplace';
 const MENU_EDITOR = 'otomatn-open-editor';
 const SETTINGS_KEY = 'otomatn_settings';
@@ -53,8 +55,21 @@ async function loadOptions() {
   }
 }
 
-async function openEditor(text) {
-  await chrome.storage.local.set({ [PENDING_KEY]: text });
+/** انتخاب صفحه را (با قالب) می‌خواند؛ اگر فریم‌های ناهمسرچشمه مشکل ایجاد کنند فقط فریم اصلی. */
+async function probeTab(tabId) {
+  for (const target of [{ tabId, allFrames: true }, { tabId, frameIds: [0] }]) {
+    try {
+      const res = await chrome.scripting.executeScript({ target, func: otomatnProbe });
+      const hit = res.map((r) => r.result).find((r) => r && r.text && r.text.trim());
+      if (hit) return hit;
+    } catch { /* تلاش بعدی */ }
+  }
+  return null;
+}
+
+async function openEditor(content) {
+  const data = typeof content === 'string' ? { text: content } : content;
+  await chrome.storage.local.set({ [PENDING_KEY]: data });
   await chrome.windows.create({
     url: chrome.runtime.getURL('popup/popup.html?window=1'),
     type: 'popup',
@@ -90,18 +105,12 @@ async function fixSelection(tab) {
   }
 }
 
-chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  if (info.menuItemId === MENU_FIX) await fixSelection(tab);
-  if (info.menuItemId === MENU_EDITOR && info.selectionText) {
-    // selectionText خط‌های جدید را حفظ نمی‌کند؛ از خود صفحه می‌خوانیم.
-    let text = info.selectionText;
-    try {
-      const res = await runInPage(tab.id, () => globalThis.__OTOMATN_PAGE__.getSelectionInfo().text);
-      text = res.map((r) => r.result).find(Boolean) || text;
-    } catch {
-      /* از متن منو استفاده می‌شود */
-    }
-    await openEditor(text);
+chrome.contextMenus.onClicked.addListener(async (info_, tab) => {
+  if (info_.menuItemId === MENU_FIX) await fixSelection(tab);
+  if (info_.menuItemId === MENU_EDITOR && info_.selectionText) {
+    // selectionText خط‌های جدید و قالب را حفظ نمی‌کند؛ از خود صفحه می‌خوانیم.
+    const info = (await probeTab(tab.id)) || { text: info_.selectionText };
+    await openEditor(info);
   }
 });
 

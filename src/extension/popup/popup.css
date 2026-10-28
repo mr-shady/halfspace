@@ -269,6 +269,9 @@ html:not(.win) .cta { padding: 11px 14px; flex: none; }
 html:not(.win) .summary { padding: 8px 12px; gap: 10px; flex: none; }
 html:not(.win) .sum-num { font-size: 24px; min-width: 34px; }
 html:not(.win) .sum-cats { display: none; }
+/* ردیف خلاصه همیشه جا دارد تا ظاهر شدنش بقیه را پایین نبرد */
+html:not(.win) .summary { height: 58px; padding-block: 6px; }
+html:not(.win) .summary[hidden] { display: flex; visibility: hidden; }
 html:not(.win) .result-card { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 html:not(.win) .panel.on { flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column; padding: 10px; }
 html:not(.win) #output { flex: 1; min-height: 0; }

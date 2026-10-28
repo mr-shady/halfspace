@@ -86,7 +86,7 @@
 **نصب دستی (حالت توسعه‌دهنده):**
 
 - **کروم:** فایل zip را استخراج کنید ← `chrome://extensions` ← **Developer mode** ← **Load unpacked** ← پوشهٔ استخراج‌شده.
-- **فایرفاکس:** `about:debugging` ← **This Firefox** ← **Load Temporary Add-on** ← فایل `manifest.json` از پوشهٔ استخراج‌شده.
+- **فایرفاکس:** `about:debugging` ← **This Firefox** ← **Load Temporary Add-on** ← مستقیم فایل `otomatn-firefox-v3.0.0.zip` (بدون نیاز به استخراج یا build). افزونهٔ امضانشده با بستن فایرفاکس برداشته می‌شود؛ برای نصب دائمی باید از AMO منتشر شود، یا در Developer Edition/Nightly گزینهٔ `xpinstall.signatures.required` را `false` کنید.
 
 > راهنمای انتشار در فروشگاه‌ها و متن آمادهٔ ثبت‌نام: [`store/LISTING.md`](store/LISTING.md).
 

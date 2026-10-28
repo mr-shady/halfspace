@@ -15,7 +15,7 @@
   },
   "permissions": ["activeTab", "scripting", "contextMenus", "storage"],
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["page/probe.js", "background.js"]
   },
   "action": {
     "default_icon": {
