@@ -155,3 +155,23 @@ test('متن بزرگ سریع پردازش می‌شود', () => {
   Otomatn.refine(big);
   assert.ok(Date.now() - t0 < 5000, 'too slow');
 });
+
+test('موتور ۳٫۱: پسوندهای وابسته، «بی»، تفضیلی و همزه', () => {
+  assert.equal(fix('انعطاف پذیر'), z('انعطاف|پذیر'));
+  assert.equal(fix('بهینه سازی'), z('بهینه|سازی'));
+  assert.equal(fix('علاقه مند'), z('علاقه|مند'));
+  assert.equal(fix('بی توجه'), z('بی|توجه'));
+  assert.equal(fix('بی بی سی'), 'بی بی سی');
+  assert.equal(fix('ساده ترین راه'), z('ساده|ترین راه'));
+  assert.equal(fix('جالب تر از قبل'), z('جالب|تر از قبل'));
+  assert.equal(fix('خانه مان'), z('خانه|مان'));
+  assert.equal(fix('رفتهام'), z('رفته|ام'));
+  assert.equal(fix('نهادهای دولتی'), 'نهادهای دولتی');
+  assert.equal(fix('تایید'), 'تأیید');
+  assert.equal(fix('موسسه'), 'مؤسسه');
+  assert.equal(fix('توانائی'), 'توانایی');
+  assert.equal(fix('اعضاء'), 'اعضا');
+  assert.equal(fix('می گذراند'), z('می|گذراند'));
+  assert.equal(fix('در این مدار'), 'در این مدار');
+  assert.equal(fix('بعضا'), 'بعضاً');
+});

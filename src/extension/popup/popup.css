@@ -80,6 +80,12 @@ a:hover { text-decoration: underline; }
 .top-actions { display: flex; gap: 6px; align-items: center; }
 .sample-btn { height: 34px; padding: 0 12px; border-radius: 10px; border: 1px dashed var(--primary); background: transparent; color: var(--primary); font-weight: 700; font-size: 12px; white-space: nowrap; transition: .15s; }
 .sample-btn:hover { background: var(--surface-2); }
+.status-pill { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 10px; font-weight: 700; font-size: 12px; white-space: nowrap;
+  color: var(--primary); background: linear-gradient(135deg, rgba(37, 99, 235, .12), rgba(99, 102, 241, .12)); border: 1px solid rgba(99, 102, 241, .3); animation: pill-in .25s ease-out; }
+.status-pill b { font-size: 15px; }
+.status-pill.clean { color: var(--ok); background: rgba(22, 163, 74, .12); border-color: rgba(22, 163, 74, .35); }
+.status-pill[hidden], html.win .status-pill { display: none; }
+@keyframes pill-in { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: none; } }
 .icon-btn { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); transition: .15s; }
 .icon-btn:hover { color: var(--primary); border-color: var(--primary); }
 html.win #winBtn { display: none; }
@@ -269,9 +275,8 @@ html:not(.win) .cta { padding: 11px 14px; flex: none; }
 html:not(.win) .summary { padding: 8px 12px; gap: 10px; flex: none; }
 html:not(.win) .sum-num { font-size: 24px; min-width: 34px; }
 html:not(.win) .sum-cats { display: none; }
-/* ردیف خلاصه همیشه جا دارد تا ظاهر شدنش بقیه را پایین نبرد */
-html:not(.win) .summary { height: 58px; padding-block: 6px; }
-html:not(.win) .summary[hidden] { display: flex; visibility: hidden; }
+/* در پاپ‌آپ کوچک خلاصه به شکل یک برچسب در سربرگ نشان داده می‌شود تا چیدمان جابه‌جا نشود */
+html:not(.win) .summary { display: none; }
 html:not(.win) .result-card { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 html:not(.win) .panel.on { flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column; padding: 10px; }
 html:not(.win) #output { flex: 1; min-height: 0; }

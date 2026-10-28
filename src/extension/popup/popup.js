@@ -151,6 +151,11 @@
     const r = state.result;
     const box = $('#summary');
     box.hidden = false;
+    const pill = $('#statusPill');
+    pill.hidden = false;
+    pill.className = 'status-pill' + (r.total ? '' : ' clean');
+    pill.innerHTML = r.total ? `<b>${toFa(r.total)}</b> اصلاح انجام شد` : '✓ متن بی‌نقص است';
+    pill.title = `${toFa(r.before.chars)} ← ${toFa(r.after.chars)} نویسه`;
     if (!r.total) {
       box.className = 'summary clean';
       box.innerHTML = `<div class="sum-num">✓</div><div class="sum-txt"><strong>متن شما بی‌نقص است!</strong><span>هیچ موردی برای اصلاح پیدا نشد.</span></div>`;
@@ -367,7 +372,7 @@
       inputEl().innerHTML = '';
       state.ran = false; state.result = null; state.source = null;
       $('#output').hidden = true; $('#output').innerHTML = '';
-      $('#resPlaceholder').hidden = false; $('#actions').hidden = true; $('#summary').hidden = true;
+      $('#resPlaceholder').hidden = false; $('#actions').hidden = true; $('#summary').hidden = true; $('#statusPill').hidden = true;
       $('#cmpPlaceholder').hidden = false; $('#cmpInline').hidden = true; $('#cmpSplit').hidden = true;
       $('#repPlaceholder').hidden = false; $('#report').innerHTML = ''; $('#repBadge').hidden = true;
       renderInStats();
