@@ -76,5 +76,5 @@ Developed by Reza Nemati · Source (MIT): https://github.com/mr-shady/halfspace
 
 **Firefox Add-ons (AMO)** — https://addons.mozilla.org/developers/
 1. Submit a New Add-on ← On this site (listed) ← آپلود `otomatn-firefox-v3.0.0.zip`
-2. شناسهٔ افزونه در manifest: `otomatn@reza-nemati.ir`. کد بدون minify است و نیازی به آپلود سورس جداگانه نیست.
+2. شناسهٔ افزونه در manifest: `{be00062e-fe16-4bfc-b9e1-8cace4d16afd}` (شناسهٔ ثبت‌شده در AMO). کد بدون minify است و نیازی به آپلود سورس جداگانه نیست.
 3. تکمیل Listing با همان متن و اسکرین‌شات‌ها.

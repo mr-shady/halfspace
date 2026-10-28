@@ -37,7 +37,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "otomatn@reza-nemati.ir",
+      "id": "{be00062e-fe16-4bfc-b9e1-8cace4d16afd}",
       "strict_min_version": "115.0",
       "data_collection_permissions": { "required": ["none"] }
     }
