@@ -14,6 +14,8 @@
 [![firefox](https://img.shields.io/badge/Firefox-115%2B-FF7139?logo=firefox-browser&logoColor=white)](#-نصب)
 [![offline](https://img.shields.io/badge/100%25-offline-0ea5e9)](PRIVACY.md)
 
+**🌐 [سایت و دانلود: mr-shady.github.io/halfspace](https://mr-shady.github.io/halfspace/)**
+
 توسعه‌یافته توسط **[رضا نعمتی](https://reza-nemati.ir)**
 
 <br>

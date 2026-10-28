@@ -138,3 +138,13 @@ function FixGrammar(text, options) {
 `;
 writeFileSync(join(ROOT, 'FixGrammar.js'), readFileSync(CORE, 'utf8') + legacy);
 console.log('✔ FixGrammar.js (سازگار با نسخهٔ قدیمی) به‌روز شد');
+
+/* ---------- سایت GitHub Pages (docs/): کپی موتور، فونت، آیکن و تصاویر ---------- */
+const SITE = join(ROOT, 'docs', 'assets');
+rmSync(SITE, { recursive: true, force: true });
+mkdirSync(join(SITE, 'shots'), { recursive: true });
+cpSync(CORE, join(SITE, 'otomatn-core.js'));
+cpSync(join(SRC, 'fonts'), join(SITE, 'fonts'), { recursive: true });
+for (const s of [32, 128, 256, 512]) cpSync(join(SRC, 'icons', `logo-${s}.png`), join(SITE, `logo-${s}.png`));
+for (const f of readdirSync(join(ROOT, 'store', 'screenshots'))) cpSync(join(ROOT, 'store', 'screenshots', f), join(SITE, 'shots', f));
+console.log('✔ docs/assets (سایت) به‌روز شد');

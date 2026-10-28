@@ -66,6 +66,7 @@ html.win body { width: auto; height: auto; min-height: 100vh; overflow: auto; }
 .app { padding: 14px 14px 10px; }
 .ic { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 .ic.xl { width: 40px; height: 40px; opacity: .45; }
+.ic.sm { width: 15px; height: 15px; }
 button { font: inherit; color: inherit; cursor: pointer; }
 a { color: var(--primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -78,7 +79,7 @@ a:hover { text-decoration: underline; }
   background: linear-gradient(120deg, var(--primary), var(--primary-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .brand p { margin: 0; font-size: 11px; color: var(--muted); }
 .top-actions { display: flex; gap: 6px; align-items: center; }
-.sample-btn { height: 34px; padding: 0 12px; border-radius: 10px; border: 1px dashed var(--primary); background: transparent; color: var(--primary); font-weight: 700; font-size: 12px; white-space: nowrap; transition: .15s; }
+.sample-btn { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 10px; border: 1px dashed var(--primary); background: transparent; color: var(--primary); font-weight: 700; font-size: 12px; white-space: nowrap; transition: .15s; }
 .sample-btn:hover { background: var(--surface-2); }
 .status-pill { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 10px; font-weight: 700; font-size: 12px; white-space: nowrap;
   color: var(--primary); background: linear-gradient(135deg, rgba(37, 99, 235, .12), rgba(99, 102, 241, .12)); border: 1px solid rgba(99, 102, 241, .3); animation: pill-in .25s ease-out; }
@@ -132,20 +133,21 @@ textarea:focus { border-color: var(--primary); box-shadow: var(--ring); backgrou
 .rich blockquote { margin: .4em 0; padding-inline-start: 10px; border-inline-start: 3px solid var(--border); color: var(--muted); }
 .rich table { border-collapse: collapse; } .rich td, .rich th { border: 1px solid var(--border); padding: 2px 6px; }
 .row-end { display: flex; justify-content: flex-end; margin-top: 6px; }
-.ghost { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; color: var(--muted); padding: 4px 8px; border-radius: 8px; font-size: 12px; }
+.ghost { display: inline-flex; align-items: center; gap: 5px; background: none; border: 0; color: var(--muted); padding: 4px 8px; border-radius: 8px; font-size: 12px; }
 .ghost:hover { color: var(--del-fg); background: var(--surface-2); }
 
 /* ---------- CTA ---------- */
+.card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; flex: none; }
 .cta {
-  display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 13px 18px; border: 0; border-radius: 14px;
-  color: #fff; font-size: 15px; font-weight: 800; letter-spacing: .1px;
-  background: linear-gradient(120deg, var(--primary), var(--primary-2)); box-shadow: 0 10px 24px rgba(79, 70, 229, .32);
+  display: inline-flex; align-items: center; gap: 7px; flex: none; height: 36px; padding: 0 14px; border: 0; border-radius: 11px;
+  color: #fff; font-size: 13px; font-weight: 800; white-space: nowrap;
+  background: linear-gradient(120deg, var(--primary), var(--primary-2)); box-shadow: 0 6px 16px rgba(79, 70, 229, .3);
   transition: transform .12s, box-shadow .12s, filter .12s;
 }
-.cta:hover { transform: translateY(-1px); filter: brightness(1.06); box-shadow: 0 14px 30px rgba(79, 70, 229, .4); }
+.cta:hover { transform: translateY(-1px); filter: brightness(1.07); box-shadow: 0 9px 20px rgba(79, 70, 229, .4); }
 .cta:active { transform: translateY(0); }
-.cta kbd { font: 600 10px/1 Consolas, monospace; background: rgba(255, 255, 255, .2); padding: 4px 6px; border-radius: 6px; direction: ltr; }
-.cta .ic { width: 20px; height: 20px; }
+.cta kbd { font: 600 9.5px/1 Consolas, monospace; background: rgba(255, 255, 255, .2); padding: 3px 5px; border-radius: 5px; direction: ltr; }
+.cta .ic { width: 17px; height: 17px; }
 
 /* ---------- summary ---------- */
 .summary { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--radius);
@@ -271,7 +273,6 @@ html:not(.win) .col-in .card { flex: 1; min-height: 0; display: flex; flex-direc
 html:not(.win) .col-in .field { flex: 1; min-height: 0; display: flex; }
 html:not(.win) #input { flex: 1; min-height: 0; }
 html:not(.win) .card-head { margin-bottom: 6px; }
-html:not(.win) .cta { padding: 11px 14px; flex: none; }
 html:not(.win) .summary { padding: 8px 12px; gap: 10px; flex: none; }
 html:not(.win) .sum-num { font-size: 24px; min-width: 34px; }
 html:not(.win) .sum-cats { display: none; }
@@ -287,3 +288,5 @@ html:not(.win) .actions button { padding: 8px 10px; }
 html:not(.win) .tabs button { padding: 6px 4px; font-size: 12px; }
 html:not(.win) .foot { margin-top: 6px; padding-top: 5px; }
 html:not(.win) .presets { grid-template-columns: repeat(2, 1fr); }
+html:not(.win) .card-foot .chips { flex-wrap: nowrap; overflow: hidden; }
+html:not(.win) #inStats .chip:nth-child(3) { display: none; }
